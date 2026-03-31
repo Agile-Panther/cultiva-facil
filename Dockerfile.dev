@@ -1,0 +1,21 @@
+FROM maven:3.9-eclipse-temurin-21
+WORKDIR /app
+
+EXPOSE 8080
+EXPOSE 5005
+
+# Source code and Maven cache are mounted via docker-compose volumes.
+# On first run, Maven downloads all dependencies (~5-10 min).
+# Subsequent runs use the cached maven_repo volume (fast).
+#
+# Hot reload:
+#   - spring-boot-devtools watches target/classes for changes and restarts the Spring context.
+#   - Trigger recompilation from your IDE (IntelliJ auto-build / VS Code Java extension)
+#     or run: docker exec <container> mvn compile -pl presentation-backend -am
+#
+# Remote debug: connect your IDE to localhost:5005
+
+CMD ["mvn", "spring-boot:run", \
+     "-pl", "presentation-backend", \
+     "-am", \
+     "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]

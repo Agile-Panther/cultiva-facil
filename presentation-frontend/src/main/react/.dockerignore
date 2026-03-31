@@ -1,0 +1,21 @@
+# Dependencies (reinstalled inside container)
+node_modules/
+
+# Build output
+dist/
+
+# Secrets
+.env
+.env.dev
+.env.local
+.env.*.local
+
+# Docker files
+Dockerfile*
+
+# IDE / Editor
+.idea/
+.vscode/
+
+# Docs
+*.md

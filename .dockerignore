@@ -1,0 +1,30 @@
+# Version control
+.git/
+.gitignore
+
+# IDE / Editor
+.idea/
+.vscode/
+*.iml
+
+# Claude Code
+.claude/
+
+# Compiled output (rebuilt inside container)
+**/target/
+
+# Node
+**/node_modules/
+**/dist/
+
+# Secrets
+.env
+.env.dev
+
+# Docker files (not needed inside image)
+Dockerfile*
+docker-compose*.yml
+
+# Docs
+*.md
+LICENSE
