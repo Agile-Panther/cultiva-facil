@@ -1,13 +1,6 @@
 FROM node:20-alpine
 WORKDIR /app
-
 COPY package*.json .
 RUN npm install
-
 EXPOSE 5173
-
-# Source is mounted via docker-compose volume.
-# node_modules is kept in a named volume to avoid host/container conflicts.
-# Vite HMR runs automatically when source files change.
-
 CMD ["npm", "run", "dev", "--", "--host"]

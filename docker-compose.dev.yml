@@ -22,14 +22,11 @@ services:
       dockerfile: Dockerfile.dev
     env_file: .env.dev
     volumes:
-      # Full project source mounted so Maven compiles from host files.
       - .:/app
-      # Named volume keeps downloaded dependencies between restarts.
-      # First run is slow (~5-10 min); subsequent runs reuse cache.
       - maven_repo:/root/.m2
     ports:
       - "8080:8080"
-      - "5005:5005"   # Remote debug
+      - "5005:5005"
     depends_on:
       db:
         condition: service_healthy
@@ -40,9 +37,7 @@ services:
       dockerfile: Dockerfile.dev
     env_file: .env.dev
     volumes:
-      # Bind mount source for Vite HMR.
       - ./presentation-frontend/src/main/react:/app
-      # Named volume isolates container node_modules from host.
       - node_modules_dev:/app/node_modules
     ports:
       - "5173:5173"

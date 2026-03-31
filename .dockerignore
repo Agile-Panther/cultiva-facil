@@ -1,30 +1,26 @@
-# Version control
-.git/
-.gitignore
+# Dependencies
+node_modules/
+presentation-frontend/src/main/react/node_modules/
 
-# IDE / Editor
-.idea/
-.vscode/
-*.iml
-
-# Claude Code
-.claude/
-
-# Compiled output (rebuilt inside container)
-**/target/
-
-# Node
-**/node_modules/
-**/dist/
+# Build output
+dist/
+target/
 
 # Secrets
 .env
 .env.dev
+.env.local
+.env.*.local
 
-# Docker files (not needed inside image)
-Dockerfile*
-docker-compose*.yml
+# IDE / Editor
+.idea/
+.vscode/
+
+# Docker
+Dockerfile
+Dockerfile.dev
+docker-compose.yml
+docker-compose.dev.yml
 
 # Docs
 *.md
-LICENSE
