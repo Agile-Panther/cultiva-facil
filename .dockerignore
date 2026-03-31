@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+presentation-frontend/src/main/react/node_modules/
+
+# Build output
+dist/
+target/
+
+# Secrets
+.env
+.env.dev
+.env.local
+.env.*.local
+
+# IDE / Editor
+.idea/
+.vscode/
+
+# Docker
+Dockerfile
+Dockerfile.dev
+docker-compose.yml
+docker-compose.dev.yml
+
+# Docs
+*.md
