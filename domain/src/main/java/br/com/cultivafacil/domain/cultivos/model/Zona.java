@@ -1,6 +1,8 @@
 package br.com.cultivafacil.domain.cultivos.model;
 
+import br.com.cultivafacil.domain.cultivos.exception.IntervaloSemHistoricoException;
 import br.com.cultivafacil.domain.cultivos.exception.ZonaComCultivoAtivoException;
+import br.com.cultivafacil.domain.cultivos.vo.DiasDescanso;
 import br.com.cultivafacil.domain.cultivos.vo.StatusZona;
 
 import java.util.ArrayList;
@@ -23,6 +25,16 @@ public class Zona {
         CicloAgricola ciclo = new CicloAgricola(nomeCultura);
         this.ciclos.add(ciclo);
         this.situacao = StatusZona.ATIVA;
+    }
+
+    public void definirIntervaloDescanso(String nomeCultura, DiasDescanso diasDescanso) {
+        boolean temHistoricoEncerrado = ciclos.stream()
+                .anyMatch(c -> c.getNomeCultura().equals(nomeCultura)
+                        && c.getStatus() == CicloAgricola.StatusCiclo.ENCERRADO);
+
+        if (!temHistoricoEncerrado) {
+            throw new IntervaloSemHistoricoException();
+        }
     }
 
     public StatusZona getSituacao() {
