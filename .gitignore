@@ -30,3 +30,7 @@ dist/
 # Environment files (contain secrets)
 .env
 .env.dev
+
+# IntelliJ IDEA
+.idea/
+*.iml
