@@ -7,11 +7,17 @@ public class CicloAgricola {
     private final String nomeCultura;
     private final LocalDate dataInicio;
     private StatusCiclo status;
+    private LocalDate dataColheita;
 
     public CicloAgricola(String nomeCultura) {
         this.nomeCultura = nomeCultura;
         this.dataInicio = LocalDate.now();
         this.status = StatusCiclo.ATIVO;
+    }
+
+    public void encerrar(LocalDate dataColheita) {
+        this.dataColheita = dataColheita;
+        this.status = StatusCiclo.ENCERRADO;
     }
 
     public String getNomeCultura() {
@@ -20,6 +26,10 @@ public class CicloAgricola {
 
     public LocalDate getDataInicio() {
         return dataInicio;
+    }
+
+    public LocalDate getDataColheita() {
+        return dataColheita;
     }
 
     public StatusCiclo getStatus() {

@@ -1,5 +1,6 @@
 package br.com.cultivafacil.domain.cultivos;
 
+import br.com.cultivafacil.domain.cultivos.exception.IntervaloNaoCumpridoException;
 import br.com.cultivafacil.domain.cultivos.exception.IntervaloSemHistoricoException;
 import br.com.cultivafacil.domain.cultivos.exception.ZonaComCultivoAtivoException;
 import br.com.cultivafacil.domain.cultivos.model.Zona;
@@ -7,6 +8,8 @@ import br.com.cultivafacil.domain.cultivos.vo.DiasDescanso;
 import br.com.cultivafacil.domain.cultivos.vo.StatusZona;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -53,6 +56,20 @@ class ZonaTest {
         assertThrows(
                 IntervaloSemHistoricoException.class,
                 () -> zona.definirIntervaloDescanso("Milho", new DiasDescanso(30))
+        );
+    }
+
+    @Test
+    @DisplayName("RN-01: deve rejeitar vinculo dentro do intervalo de descanso")
+    void deveRejeitarVinculoDentroDoIntervaloDeDescanso() {
+        Zona zona = new Zona();
+        zona.vincularCultura("Milho");
+        zona.encerrarCiclo("Milho", LocalDate.now().minusDays(10));
+        zona.definirIntervaloDescanso("Milho", new DiasDescanso(30));
+
+        assertThrows(
+                IntervaloNaoCumpridoException.class,
+                () -> zona.vincularCultura("Milho")
         );
     }
 }
