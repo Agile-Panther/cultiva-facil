@@ -9,13 +9,13 @@ public class CicloAgricola {
     private StatusCiclo status;
     private LocalDate dataColheita;
 
-    public CicloAgricola(String nomeCultura) {
+    CicloAgricola(String nomeCultura) {
         this.nomeCultura = nomeCultura;
         this.dataInicio = LocalDate.now();
         this.status = StatusCiclo.ATIVO;
     }
 
-    public void encerrar(LocalDate dataColheita) {
+    void encerrar(LocalDate dataColheita) {
         this.dataColheita = dataColheita;
         this.status = StatusCiclo.ENCERRADO;
     }
@@ -28,12 +28,12 @@ public class CicloAgricola {
         return dataInicio;
     }
 
-    public LocalDate getDataColheita() {
-        return dataColheita;
-    }
-
     public StatusCiclo getStatus() {
         return status;
+    }
+
+    public LocalDate getDataColheita() {
+        return dataColheita;
     }
 
     public enum StatusCiclo {
