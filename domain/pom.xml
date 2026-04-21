@@ -22,6 +22,18 @@
 	</build>     
 
     <dependencies>
+        <!-- Shared Kernel — IDs tipados cross-BC -->
+        <dependency>
+            <groupId>com.agilepanther</groupId>
+            <artifactId>CultivaFacil-shared</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
