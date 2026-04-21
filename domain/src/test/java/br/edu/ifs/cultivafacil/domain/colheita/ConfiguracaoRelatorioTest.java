@@ -1,6 +1,7 @@
 package br.edu.ifs.cultivafacil.domain.colheita;
 
 
+import br.edu.ifs.cultivafacil.shared.AgricultorId;
 import org.junit.jupiter.api.Test;
 import java.util.UUID;
 

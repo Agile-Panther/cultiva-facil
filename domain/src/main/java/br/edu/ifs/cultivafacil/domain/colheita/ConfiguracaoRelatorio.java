@@ -1,6 +1,7 @@
 package br.edu.ifs.cultivafacil.domain.colheita;
 
 
+import br.edu.ifs.cultivafacil.shared.AgricultorId;
 import org.apache.commons.lang3.Validate;
 import java.util.UUID;
 

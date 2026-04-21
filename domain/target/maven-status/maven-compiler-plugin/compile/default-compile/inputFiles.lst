@@ -1,15 +1,11 @@
-E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\autenticacao\AgricultorId.java
-E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\AgricultorId.java
 E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\Celeiro.java
 E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\CeleiroId.java
-E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\CeleiroRepositorio.java
 E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\CeleiroServico.java
-E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\CicloAgricolaId.java
 E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\ConfiguracaoRelatorio.java
-E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\ConfiguracaoRelatorioRepositorio.java
 E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\FiltroPeriodo.java
 E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\ItemCeleiro.java
 E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\MetaComerciavel.java
 E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\MotivoSaida.java
+E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\repository\CeleiroRepositorio.java
+E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\repository\ConfiguracaoRelatorioRepositorio.java
 E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\SaidaCeleiro.java
-E:\Projetos\cultiva-facil\domain\src\main\java\br\edu\ifs\cultivafacil\domain\colheita\ZonaId.java

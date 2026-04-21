@@ -2,6 +2,7 @@ package br.edu.ifs.cultivafacil.domain.colheita.repository;
 
 
 import br.edu.ifs.cultivafacil.domain.colheita.ConfiguracaoRelatorio;
+import br.edu.ifs.cultivafacil.shared.AgricultorId;
 
 import java.util.List;
 import java.util.Optional;

@@ -2,7 +2,8 @@ package br.edu.ifs.cultivafacil.domain.colheita.repository;
 
 
 import br.edu.ifs.cultivafacil.domain.colheita.Celeiro;
-import br.edu.ifs.cultivafacil.domain.colheita.ZonaId;
+import br.edu.ifs.cultivafacil.shared.AgricultorId;
+import br.edu.ifs.cultivafacil.shared.ZonaId;
 
 import java.util.List;
 import java.util.Optional;

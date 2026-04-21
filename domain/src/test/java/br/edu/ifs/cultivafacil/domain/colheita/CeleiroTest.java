@@ -1,6 +1,9 @@
 package br.edu.ifs.cultivafacil.domain.colheita;
 
 
+import br.edu.ifs.cultivafacil.shared.AgricultorId;
+import br.edu.ifs.cultivafacil.shared.CicloAgricolaId;
+import br.edu.ifs.cultivafacil.shared.ZonaId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
