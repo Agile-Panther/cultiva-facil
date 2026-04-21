@@ -1,4 +1,4 @@
-package br.edu.ifs.cultivafacil.domain.colheita;
+package br.edu.cesar.cultivafacil.domain.colheita;
 
 import br.edu.ifs.cultivafacil.shared.CicloAgricolaId;
 import br.edu.ifs.cultivafacil.shared.ZonaId;

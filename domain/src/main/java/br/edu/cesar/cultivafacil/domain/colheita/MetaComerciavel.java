@@ -1,4 +1,4 @@
-package br.edu.ifs.cultivafacil.domain.colheita;
+package br.edu.cesar.cultivafacil.domain.colheita;
 
 import br.edu.ifs.cultivafacil.shared.CicloAgricolaId;
 import org.apache.commons.lang3.Validate;

@@ -1,4 +1,4 @@
-package br.edu.ifs.cultivafacil.domain.colheita;
+package br.edu.cesar.cultivafacil.domain.colheita;
 
 import org.apache.commons.lang3.Validate;
 import java.util.Objects;
