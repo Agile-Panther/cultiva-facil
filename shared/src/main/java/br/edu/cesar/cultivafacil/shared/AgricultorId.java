@@ -1,19 +1,19 @@
-package br.edu.ifs.cultivafacil.shared;
+package br.edu.cesar.cultivafacil.shared;
 
 import org.apache.commons.lang3.Validate;
 import java.util.UUID;
 
-public final class CicloAgricolaId {
+public final class AgricultorId {
 
     private final UUID valor;
 
-    public CicloAgricolaId(UUID valor) {
-        Validate.notNull(valor, "CicloAgricolaId nao pode ser nulo");
+    public AgricultorId(UUID valor) {
+        Validate.notNull(valor, "AgricultorId nao pode ser nulo");
         this.valor = valor;
     }
 
-    public static CicloAgricolaId novo() {
-        return new CicloAgricolaId(UUID.randomUUID());
+    public static AgricultorId novo() {
+        return new AgricultorId(UUID.randomUUID());
     }
 
     public UUID getValor() {
@@ -23,8 +23,8 @@ public final class CicloAgricolaId {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CicloAgricolaId)) return false;
-        CicloAgricolaId that = (CicloAgricolaId) o;
+        if (!(o instanceof AgricultorId)) return false;
+        AgricultorId that = (AgricultorId) o;
         return valor.equals(that.valor);
     }
 
