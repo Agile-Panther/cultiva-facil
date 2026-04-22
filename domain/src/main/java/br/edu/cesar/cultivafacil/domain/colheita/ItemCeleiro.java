@@ -1,7 +1,7 @@
 package br.edu.cesar.cultivafacil.domain.colheita;
 
-import br.edu.ifs.cultivafacil.shared.CicloAgricolaId;
-import br.edu.ifs.cultivafacil.shared.ZonaId;
+import br.edu.cesar.cultivafacil.shared.CicloAgricolaId;
+import br.edu.cesar.cultivafacil.shared.ZonaId;
 import org.apache.commons.lang3.Validate;
 import java.math.BigDecimal;
 import java.util.UUID;

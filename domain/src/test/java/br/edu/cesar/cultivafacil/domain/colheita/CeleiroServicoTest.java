@@ -3,9 +3,9 @@ package br.edu.cesar.cultivafacil.domain.colheita;
 
 import br.edu.cesar.cultivafacil.domain.colheita.repository.CeleiroRepositorio;
 import br.edu.cesar.cultivafacil.domain.colheita.repository.ConfiguracaoRelatorioRepositorio;
-import br.edu.ifs.cultivafacil.shared.AgricultorId;
-import br.edu.ifs.cultivafacil.shared.CicloAgricolaId;
-import br.edu.ifs.cultivafacil.shared.ZonaId;
+import br.edu.cesar.cultivafacil.shared.AgricultorId;
+import br.edu.cesar.cultivafacil.shared.CicloAgricolaId;
+import br.edu.cesar.cultivafacil.shared.ZonaId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
