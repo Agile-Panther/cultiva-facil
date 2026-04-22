@@ -37,3 +37,6 @@ dist/
 .env.dev
 
 .claude
+
+# Javacompile
+target/
