@@ -8,19 +8,26 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.3</version>
+		<version>4.0.5</version>
 		<relativePath />
 	</parent>
 
-    <groupId>com.agilepanther</groupId>
-    <artifactId>CultivaFacil-parent</artifactId>
+    <groupId>br.edu.cesar</groupId>
+    <artifactId>cultiva-facil-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     
     <modules>
-        <module>shared</module>
-        <module>domain</module>
+		<module>domain-shared</module>
+        <module>domain-acesso</module>
+        <module>domain-terreno</module>
+        <module>domain-cultivo</module>
+        <module>domain-agenda</module>
+        <module>domain-sanidade</module>
+        <module>domain-colheita</module>
+        <module>domain-insumo</module>
+        <module>domain-clima</module>
         <module>application</module>
         <module>infrastructure</module>
         <module>presentation-frontend</module>
