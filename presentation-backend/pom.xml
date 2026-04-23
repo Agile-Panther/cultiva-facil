@@ -6,12 +6,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.agilepanther</groupId>
-        <artifactId>CultivaFacil-parent</artifactId>
+        <groupId>br.edu.cesar</groupId>
+        <artifactId>cultiva-facil-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>CultivaFacil-presentation-backend</artifactId>
+    <artifactId>cultiva-facil-presentation-backend</artifactId>
     
 	<profiles>
 		<profile>
@@ -35,27 +35,28 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>CultivaFacil-application</artifactId>
+            <artifactId>cultiva-facil-application</artifactId>
             <version>${project.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>CultivaFacil-presentation-frontend</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <dependency>
-            <groupId>com.agilepanther</groupId>
-            <artifactId>CultivaFacil-infrastructure</artifactId>
+            <groupId>br.edu.cesar</groupId>
+            <artifactId>cultiva-facil-infrastructure</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>
+        
+		<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		    <scope>test</scope>
+		</dependency>        
+        
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>        
     </dependencies>    
 </project>
