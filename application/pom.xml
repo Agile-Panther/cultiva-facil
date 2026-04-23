@@ -16,11 +16,6 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>cultiva-facil-domain-compartilhado</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>cultiva-facil-domain-acesso</artifactId>
             <version>${project.version}</version>
         </dependency>
