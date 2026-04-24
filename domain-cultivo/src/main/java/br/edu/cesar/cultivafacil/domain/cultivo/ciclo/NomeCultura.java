@@ -1,13 +1,13 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.ciclo;
 
-import org.apache.commons.lang3.Validate;
-
 public class NomeCultura {
 
     private final String valor;
 
     public NomeCultura(String valor) {
-        Validate.notBlank(valor, "Nome da cultura nao pode ser vazio");
+        if (valor == null || valor.isBlank()) {
+            throw new IllegalArgumentException("Nome da cultura e obrigatorio");
+        }
         this.valor = valor.trim();
     }
 

@@ -1,102 +1,93 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.ciclo;
 
+import br.edu.cesar.cultivafacil.domain.terreno.zona.ZonaId;
 import org.apache.commons.lang3.Validate;
-
-import java.time.LocalDate;
-import java.util.UUID;
 
 public class CicloAgricola {
 
-    private final UUID id;
-    private final UUID zonaId;
-    private final NomeCultura nomeCultura;
+    private final CicloAgricolaId id;
+    private final ZonaId zonaId;
+    private final NomeCultura cultura;
     private final QuantidadePlantada quantidadePlantada;
-    private final LocalDate dataInicio;
+    private final UnidadeMedidaCiclo unidade;
     private StatusCiclo status;
-    private LocalDate dataColheita;
 
-    // Construtor de criação (RN-043, RN-044, RN-045)
-    public CicloAgricola(UUID zonaId, NomeCultura nomeCultura, QuantidadePlantada quantidadePlantada) {
+    // Construtor de criação
+    public CicloAgricola(ZonaId zonaId, NomeCultura cultura,
+                         QuantidadePlantada quantidadePlantada, UnidadeMedidaCiclo unidade) {
         Validate.notNull(zonaId, "zonaId nao pode ser nulo");
-        Validate.notNull(nomeCultura, "nomeCultura nao pode ser nula");
-        Validate.notNull(quantidadePlantada, "quantidadePlantada obrigatoria no vinculo");
-        this.id = UUID.randomUUID();
+        Validate.notNull(cultura, "cultura e obrigatoria");
+        Validate.notNull(quantidadePlantada, "quantidadePlantada e obrigatoria");
+        Validate.notNull(unidade, "unidade e obrigatoria");
+        this.id = CicloAgricolaId.novo();
         this.zonaId = zonaId;
-        this.nomeCultura = nomeCultura;
+        this.cultura = cultura;
         this.quantidadePlantada = quantidadePlantada;
-        this.dataInicio = LocalDate.now();
+        this.unidade = unidade;
         this.status = StatusCiclo.ATIVO;
     }
 
     // Construtor de reconstituição
-    public CicloAgricola(UUID id, UUID zonaId, NomeCultura nomeCultura,
-                         QuantidadePlantada quantidadePlantada,
-                         LocalDate dataInicio, StatusCiclo status, LocalDate dataColheita) {
+    public CicloAgricola(CicloAgricolaId id, ZonaId zonaId, NomeCultura cultura,
+                         QuantidadePlantada quantidadePlantada, UnidadeMedidaCiclo unidade,
+                         StatusCiclo status) {
         Validate.notNull(id, "id nao pode ser nulo");
         Validate.notNull(zonaId, "zonaId nao pode ser nulo");
-        Validate.notNull(nomeCultura, "nomeCultura nao pode ser nula");
-        Validate.notNull(quantidadePlantada, "quantidadePlantada obrigatoria");
-        Validate.notNull(dataInicio, "dataInicio nao pode ser nula");
-        Validate.notNull(status, "status nao pode ser nulo");
+        Validate.notNull(cultura, "cultura e obrigatoria");
+        Validate.notNull(quantidadePlantada, "quantidadePlantada e obrigatoria");
+        Validate.notNull(unidade, "unidade e obrigatoria");
+        Validate.notNull(status, "status e obrigatorio");
         this.id = id;
         this.zonaId = zonaId;
-        this.nomeCultura = nomeCultura;
+        this.cultura = cultura;
         this.quantidadePlantada = quantidadePlantada;
-        this.dataInicio = dataInicio;
+        this.unidade = unidade;
         this.status = status;
-        this.dataColheita = dataColheita;
     }
 
-    public void encerrar(LocalDate dataColheita) {
-        Validate.validState(this.status == StatusCiclo.ATIVO, "Ciclo ja encerrado");
-        Validate.notNull(dataColheita, "Data de colheita obrigatoria");
-        this.dataColheita = dataColheita;
+    public void alterarQuantidadePlantada(QuantidadePlantada nova) {
+        throw new IllegalStateException(
+                "QUANTIDADE_PLANTADA_IMUTAVEL: a quantidade plantada nao pode ser alterada");
+    }
+
+    public void alterarUnidade(UnidadeMedidaCiclo novaUnidade) {
+        throw new IllegalStateException(
+                "UNIDADE_INVALIDA: a unidade de medida do ciclo nao pode ser alterada");
+    }
+
+    public void encerrar() {
+        if (this.status == StatusCiclo.ENCERRADO) {
+            throw new IllegalStateException("Ciclo ja esta encerrado");
+        }
         this.status = StatusCiclo.ENCERRADO;
     }
 
-    public UUID getId() { return id; }
-    public UUID getZonaId() { return zonaId; }
-    public NomeCultura getNomeCultura() { return nomeCultura; }
+    public CicloAgricolaId getId() { return id; }
+    public ZonaId getZonaId() { return zonaId; }
+    public NomeCultura getCultura() { return cultura; }
     public QuantidadePlantada getQuantidadePlantada() { return quantidadePlantada; }
-    public LocalDate getDataInicio() { return dataInicio; }
+    public UnidadeMedidaCiclo getUnidade() { return unidade; }
     public StatusCiclo getStatus() { return status; }
-    public LocalDate getDataColheita() { return dataColheita; }
-
-    // Domain Events
 
     public static class CicloIniciado {
-        private final UUID cicloAgricolaId;
-        private final UUID zonaId;
-        private final NomeCultura nomeCultura;
-        private final QuantidadePlantada quantidadePlantada;
+        public final CicloAgricolaId cicloId;
+        public final ZonaId zonaId;
+        public final NomeCultura cultura;
 
-        public CicloIniciado(UUID cicloAgricolaId, UUID zonaId,
-                             NomeCultura nomeCultura, QuantidadePlantada quantidadePlantada) {
-            this.cicloAgricolaId = cicloAgricolaId;
+        public CicloIniciado(CicloAgricolaId cicloId, ZonaId zonaId, NomeCultura cultura) {
+            this.cicloId = cicloId;
             this.zonaId = zonaId;
-            this.nomeCultura = nomeCultura;
-            this.quantidadePlantada = quantidadePlantada;
+            this.cultura = cultura;
         }
-
-        public UUID getCicloAgricolaId() { return cicloAgricolaId; }
-        public UUID getZonaId() { return zonaId; }
-        public NomeCultura getNomeCultura() { return nomeCultura; }
-        public QuantidadePlantada getQuantidadePlantada() { return quantidadePlantada; }
     }
 
     public static class CicloEncerrado {
-        private final UUID cicloAgricolaId;
-        private final UUID zonaId;
-        private final LocalDate dataColheita;
+        public final CicloAgricolaId cicloId;
+        public final ZonaId zonaId;
 
-        public CicloEncerrado(UUID cicloAgricolaId, UUID zonaId, LocalDate dataColheita) {
-            this.cicloAgricolaId = cicloAgricolaId;
+        public CicloEncerrado(CicloAgricolaId cicloId, ZonaId zonaId) {
+            this.cicloId = cicloId;
             this.zonaId = zonaId;
-            this.dataColheita = dataColheita;
         }
-
-        public UUID getCicloAgricolaId() { return cicloAgricolaId; }
-        public UUID getZonaId() { return zonaId; }
-        public LocalDate getDataColheita() { return dataColheita; }
     }
 }

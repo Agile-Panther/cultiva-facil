@@ -24,7 +24,7 @@ class NomeCulturaTest {
     @Test
     @DisplayName("deve rejeitar valor nulo")
     void deveRejeitarValorNulo() {
-        assertThrows(NullPointerException.class, () -> new NomeCultura(null));
+        assertThrows(IllegalArgumentException.class, () -> new NomeCultura(null));
     }
 
     @Test
