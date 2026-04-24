@@ -98,8 +98,6 @@ class CicloAgricolaTest {
         void quantidadePlantadaImutavelAposCriacao() {
             CicloAgricola ciclo = new CicloAgricola(ZONA_ID, new NomeCultura("Tomate"), QTD);
 
-            // QuantidadePlantada é final no AR — não há setter
-            // Verificamos que o valor retornado é o mesmo da criação
             assertEquals(QTD, ciclo.getQuantidadePlantada());
         }
     }
