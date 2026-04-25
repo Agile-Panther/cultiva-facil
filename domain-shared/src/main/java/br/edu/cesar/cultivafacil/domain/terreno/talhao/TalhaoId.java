@@ -4,17 +4,17 @@ import java.util.UUID;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 
-public final class ZonaId {
+public final class TalhaoId {
 
     private final UUID valor;
 
-    public ZonaId(UUID valor) {
+    public TalhaoId(UUID valor) {
         Validate.notNull(valor, "O ID da zona não pode ser nulo.");
         this.valor = valor;
     }
 
-    public static ZonaId novo() {
-        return new ZonaId(UUID.randomUUID());
+    public static TalhaoId novo() {
+        return new TalhaoId(UUID.randomUUID());
     }
 
     public UUID getValor() {
@@ -25,7 +25,7 @@ public final class ZonaId {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ZonaId zonaId = (ZonaId) o;
+        TalhaoId zonaId = (TalhaoId) o;
         return Objects.equals(valor, zonaId.valor);
     }
 
