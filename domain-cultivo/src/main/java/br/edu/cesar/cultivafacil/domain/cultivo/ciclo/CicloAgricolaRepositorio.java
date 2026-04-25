@@ -1,18 +1,14 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.ciclo;
 
-import java.util.List;
+import br.edu.cesar.cultivafacil.domain.terreno.zona.ZonaId;
+
 import java.util.Optional;
-import java.util.UUID;
 
 public interface CicloAgricolaRepositorio {
 
     void salvar(CicloAgricola ciclo);
 
-    Optional<CicloAgricola> buscarPorId(UUID id);
+    Optional<CicloAgricola> buscarPorId(CicloAgricolaId id);
 
-    List<CicloAgricola> buscarPorZonaId(UUID zonaId);
-
-    Optional<CicloAgricola> buscarCicloAtivoPorZonaId(UUID zonaId);
-
-    List<CicloAgricola> buscarEncerradosPorZonaIdENomeCultura(UUID zonaId, NomeCultura nomeCultura);
+    Optional<CicloAgricola> buscarAtivoPorZona(ZonaId zonaId);
 }

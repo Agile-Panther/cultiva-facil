@@ -1,13 +1,15 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.rotacao;
 
 import br.edu.cesar.cultivafacil.domain.cultivo.ciclo.NomeCultura;
+import br.edu.cesar.cultivafacil.domain.terreno.zona.ZonaId;
 
 import java.util.Optional;
-import java.util.UUID;
 
-public interface IntervaloDeDescansoRepositorio {
+public interface IntervalodeDescansoRepositorio {
 
-    void salvar(IntervaloDeDescanso intervalo);
+    void salvar(IntervalodeDescanso intervalo);
 
-    Optional<IntervaloDeDescanso> buscarPorZonaIdENomeCultura(UUID zonaId, NomeCultura nomeCultura);
+    Optional<IntervalodeDescanso> buscarIntervalo(ZonaId zonaId, NomeCultura cultura);
+
+    boolean existeCicloEncerrado(ZonaId zonaId, NomeCultura cultura);
 }

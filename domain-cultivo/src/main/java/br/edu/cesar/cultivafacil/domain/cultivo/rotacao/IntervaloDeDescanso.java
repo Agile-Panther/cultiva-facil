@@ -1,26 +1,36 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.rotacao;
 
 import br.edu.cesar.cultivafacil.domain.cultivo.ciclo.NomeCultura;
+import br.edu.cesar.cultivafacil.domain.terreno.zona.ZonaId;
 import org.apache.commons.lang3.Validate;
 
-import java.util.UUID;
+import java.time.LocalDate;
 
-public class IntervaloDeDescanso {
+public class IntervalodeDescanso {
 
-    private final UUID zonaId;
-    private final NomeCultura nomeCultura;
-    private final DiasDescanso diasDescanso;
+    private final ZonaId zonaId;
+    private final NomeCultura cultura;
+    private final DiasDescanso dias;
+    private final LocalDate dataUltimaColheita;
 
-    public IntervaloDeDescanso(UUID zonaId, NomeCultura nomeCultura, DiasDescanso diasDescanso) {
-        Validate.notNull(zonaId, "zonaId nao pode ser nulo");
-        Validate.notNull(nomeCultura, "nomeCultura nao pode ser nula");
-        Validate.notNull(diasDescanso, "diasDescanso nao pode ser nulo");
+    public IntervalodeDescanso(ZonaId zonaId, NomeCultura cultura,
+                               DiasDescanso dias, LocalDate dataUltimaColheita) {
+        Validate.notNull(zonaId, "zonaId e obrigatorio");
+        Validate.notNull(cultura, "cultura e obrigatoria");
+        Validate.notNull(dias, "dias e obrigatorio");
+        Validate.notNull(dataUltimaColheita, "dataUltimaColheita e obrigatoria");
         this.zonaId = zonaId;
-        this.nomeCultura = nomeCultura;
-        this.diasDescanso = diasDescanso;
+        this.cultura = cultura;
+        this.dias = dias;
+        this.dataUltimaColheita = dataUltimaColheita;
     }
 
-    public UUID getZonaId() { return zonaId; }
-    public NomeCultura getNomeCultura() { return nomeCultura; }
-    public DiasDescanso getDiasDescanso() { return diasDescanso; }
+    public boolean foiCumprido(LocalDate dataVinculo) {
+        return !dataVinculo.isBefore(dataUltimaColheita.plusDays(dias.getValor()));
+    }
+
+    public ZonaId getZonaId() { return zonaId; }
+    public NomeCultura getCultura() { return cultura; }
+    public DiasDescanso getDias() { return dias; }
+    public LocalDate getDataUltimaColheita() { return dataUltimaColheita; }
 }
