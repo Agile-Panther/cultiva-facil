@@ -1,6 +1,6 @@
 package br.edu.cesar.cultivafacil.domain.sanidade.foco;
 
-import br.com.cultivafacil.domain.manejo.exception.DescricaoFocoInvalidaException;
+import br.edu.cesar.cultivafacil.domain.sanidade.foco.exception.DescricaoFocoInvalidaException;
 import org.apache.commons.lang3.Validate;
 
 import java.util.Objects;
