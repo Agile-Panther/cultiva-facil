@@ -1,13 +1,14 @@
 package br.edu.cesar.cultivafacil.domain.sanidade.foco;
 
-import br.com.cultivafacil.domain.manejo.vo.*;
+import br.edu.cesar.cultivafacil.domain.cultivo.ciclo.CicloAgricolaId;
+import br.edu.cesar.cultivafacil.domain.terreno.talhao.TalhaoId;
 
 import java.time.Instant;
 
 public class FocoRegistrado {
 
     private final FocoFitossanitarioId focoFitossanitarioId;
-    private final ZonaId zonaId;
+    private final TalhaoId talhaoId;
     private final CicloAgricolaId cicloAgricolaId;
     private final TipoAgronomicoFoco tipo;
     private final NivelInfestacao nivel;
@@ -15,9 +16,9 @@ public class FocoRegistrado {
     private final DescricaoFoco descricao;
     private final Instant ocorridoEm;
 
-    public FocoRegistrado(FocoFitossanitarioId focoFitossanitarioId, ZonaId zonaId, CicloAgricolaId cicloAgricolaId, TipoAgronomicoFoco tipo, NivelInfestacao nivel, SeveridadeFoco severidade, DescricaoFoco descricao) {
+    public FocoRegistrado(FocoFitossanitarioId focoFitossanitarioId, TalhaoId zonaId, CicloAgricolaId cicloAgricolaId, TipoAgronomicoFoco tipo, NivelInfestacao nivel, SeveridadeFoco severidade, DescricaoFoco descricao) {
         this.focoFitossanitarioId = focoFitossanitarioId;
-        this.zonaId = zonaId;
+        this.talhaoId = zonaId;
         this.cicloAgricolaId = cicloAgricolaId;
         this.tipo = tipo;
         this.nivel = nivel;
@@ -30,8 +31,8 @@ public class FocoRegistrado {
         return focoFitossanitarioId;
     }
 
-    public ZonaId getZonaId() {
-        return zonaId;
+    public TalhaoId getZonaId() {
+        return talhaoId;
     }
 
     public CicloAgricolaId getCicloAgricolaId() {
