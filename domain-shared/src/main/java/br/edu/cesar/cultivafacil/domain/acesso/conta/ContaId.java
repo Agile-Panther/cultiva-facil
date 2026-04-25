@@ -1,19 +1,19 @@
-package br.edu.cesar.cultivafacil.domain.terreno.zona;
+package br.edu.cesar.cultivafacil.domain.acesso.conta;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public final class ZonaId {
+public final class ContaId {
 
     private final UUID valor;
 
-    public ZonaId(UUID valor) {
-        Objects.requireNonNull(valor, "ZonaId não pode ser nulo");
+    public ContaId(UUID valor) {
+        Objects.requireNonNull(valor, "ContaId não pode ser nulo");
         this.valor = valor;
     }
 
-    public static ZonaId novo() {
-        return new ZonaId(UUID.randomUUID());
+    public static ContaId novo() {
+        return new ContaId(UUID.randomUUID());
     }
 
     public UUID getValor() {
@@ -23,8 +23,8 @@ public final class ZonaId {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ZonaId)) return false;
-        ZonaId that = (ZonaId) o;
+        if (!(o instanceof ContaId)) return false;
+        ContaId that = (ContaId) o;
         return valor.equals(that.valor);
     }
 
