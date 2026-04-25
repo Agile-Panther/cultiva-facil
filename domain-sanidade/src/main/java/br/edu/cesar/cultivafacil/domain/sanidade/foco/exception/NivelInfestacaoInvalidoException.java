@@ -1,4 +1,4 @@
-package br.com.cultivafacil.domain.manejo.exception;
+package br.edu.cesar.cultivafacil.domain.sanidade.foco.exception;
 
 public class NivelInfestacaoInvalidoException extends RuntimeException {
     public NivelInfestacaoInvalidoException(String mensagem) {
