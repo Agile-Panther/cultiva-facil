@@ -1,4 +1,4 @@
-package br.com.cultivafacil.domain.manejo.vo;
+package br.edu.cesar.cultivafacil.domain.terreno.talhao;
 
 import java.util.UUID;
 import java.util.Objects;
