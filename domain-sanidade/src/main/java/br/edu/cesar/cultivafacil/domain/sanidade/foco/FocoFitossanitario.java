@@ -1,4 +1,4 @@
-package br.com.cultivafacil.domain.manejo.model;
+package br.edu.cesar.cultivafacil.domain.sanidade.foco;
 
 import br.com.cultivafacil.domain.manejo.event.FocoRegistrado;
 import br.com.cultivafacil.domain.manejo.vo.*;

@@ -1,9 +1,8 @@
-package br.com.cultivafacil.domain.manejo.event;
+package br.edu.cesar.cultivafacil.domain.sanidade.foco;
 
 import br.com.cultivafacil.domain.manejo.vo.*;
 
 import java.time.Instant;
-import java.util.UUID;
 
 public class FocoRegistrado {
 

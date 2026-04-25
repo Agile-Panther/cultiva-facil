@@ -1,4 +1,4 @@
-package br.com.cultivafacil.domain.manejo.repository;
+package br.edu.cesar.cultivafacil.domain.sanidade.foco;
 
 import br.com.cultivafacil.domain.manejo.model.FocoFitossanitario;
 import br.com.cultivafacil.domain.manejo.vo.FocoFitossanitarioId;

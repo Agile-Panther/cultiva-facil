@@ -1,4 +1,4 @@
-package br.com.cultivafacil.domain.manejo.vo;
+package br.edu.cesar.cultivafacil.domain.sanidade.foco;
 
 public enum NivelInfestacao {
     BAIXO,

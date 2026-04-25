@@ -1,4 +1,4 @@
-package br.com.cultivafacil.domain.manejo.vo;
+package br.edu.cesar.cultivafacil.domain.sanidade.foco;
 
 import br.com.cultivafacil.domain.manejo.exception.DescricaoFocoInvalidaException;
 import org.apache.commons.lang3.Validate;
