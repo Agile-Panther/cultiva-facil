@@ -19,7 +19,15 @@
     <packaging>pom</packaging>
     
     <modules>
+		<module>domain-shared</module>
+        <module>domain-acesso</module>
+        <module>domain-terreno</module>
         <module>domain-cultivo</module>
+        <module>domain-agenda</module>
+        <module>domain-sanidade</module>
+        <module>domain-colheita</module>
+        <module>domain-insumo</module>
+        <module>domain-clima</module>
         <module>application</module>
         <module>infrastructure</module>
         <module>presentation-frontend</module>
