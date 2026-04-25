@@ -1,19 +1,19 @@
-package br.edu.cesar.cultivafacil.domain.cultivo.ciclo;
+package br.edu.cesar.cultivafacil.domain.terreno.talhao;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public final class CicloAgricolaId {
+public final class TalhaoId {
 
     private final UUID valor;
 
-    public CicloAgricolaId(UUID valor) {
-        Objects.requireNonNull(valor, "CicloAgricolaId não pode ser nulo");
+    public TalhaoId(UUID valor) {
+        Objects.requireNonNull(valor, "TalhaoId não pode ser nulo");
         this.valor = valor;
     }
 
-    public static CicloAgricolaId novo() {
-        return new CicloAgricolaId(UUID.randomUUID());
+    public static TalhaoId novo() {
+        return new TalhaoId(UUID.randomUUID());
     }
 
     public UUID getValor() {
@@ -23,8 +23,8 @@ public final class CicloAgricolaId {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CicloAgricolaId)) return false;
-        CicloAgricolaId that = (CicloAgricolaId) o;
+        if (!(o instanceof TalhaoId)) return false;
+        TalhaoId that = (TalhaoId) o;
         return valor.equals(that.valor);
     }
 

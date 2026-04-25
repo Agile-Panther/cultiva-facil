@@ -1,6 +1,6 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.ciclo;
 
-import br.edu.cesar.cultivafacil.domain.terreno.zona.ZonaId;
+import br.edu.cesar.cultivafacil.domain.terreno.talhao.TalhaoId;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,10 +9,10 @@ class CicloAgricolaTest {
 
     private CicloAgricola cicloValido() {
         return new CicloAgricola(
-                ZonaId.novo(),
+                TalhaoId.novo(),
                 new NomeCultura("Tomate"),
                 new QuantidadePlantada(200.00),
-                UnidadeMedidaCiclo.KG
+                UnidadeMedidaCiclo.QUILOGRAMA
         );
     }
 
@@ -26,6 +26,7 @@ class CicloAgricolaTest {
         assertNotNull(cicloValido().getId());
     }
 
+    // F-06 RN-046
     @Test
     void deveRejeitarAlteracaoDaQuantidadePlantada() {
         var ciclo = cicloValido();
@@ -33,11 +34,12 @@ class CicloAgricolaTest {
                 () -> ciclo.alterarQuantidadePlantada(new QuantidadePlantada(500.00)));
     }
 
+    // F-06 RN-045
     @Test
     void deveRejeitarAlteracaoDaUnidadeAposInicio() {
         var ciclo = cicloValido();
         assertThrows(IllegalStateException.class,
-                () -> ciclo.alterarUnidade(UnidadeMedidaCiclo.GRAMAS));
+                () -> ciclo.alterarUnidade(UnidadeMedidaCiclo.GRAMA));
     }
 
     @Test
