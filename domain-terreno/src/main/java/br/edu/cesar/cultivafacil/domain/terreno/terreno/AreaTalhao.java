@@ -12,6 +12,9 @@ public class AreaTalhao {
         if (valor.compareTo(BigDecimal.ONE) < 0) {
             throw new IllegalArgumentException("AREA_ZONA_INVALIDA");
         }
+        if (valor.scale() > 2) {
+            throw new IllegalArgumentException("AREA_ZONA_INVALIDA");
+        }
         this.valor = valor;
     }
 

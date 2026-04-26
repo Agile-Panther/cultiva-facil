@@ -9,7 +9,7 @@ public class NomeTalhao {
     public NomeTalhao(String valor) {
         Objects.requireNonNull(valor, "NomeTalhao nao pode ser nulo");
         String trimado = valor.trim();
-        if (trimado.length() < 2 || trimado.length() > 80) {
+        if (trimado.length() < 2 || trimado.length() > 100) {
             throw new IllegalArgumentException("NOME_ZONA_INVALIDO");
         }
         this.valor = trimado;

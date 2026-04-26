@@ -17,8 +17,8 @@ class NomeTalhaoTest {
     }
 
     @Test
-    void deveAceitarNomeComOitentaCaracteres() {
-        assertDoesNotThrow(() -> new NomeTalhao("A".repeat(80)));
+    void deveAceitarNomeComCemCaracteres() {
+        assertDoesNotThrow(() -> new NomeTalhao("A".repeat(100)));
     }
 
     @Test
@@ -26,15 +26,15 @@ class NomeTalhaoTest {
         assertThrows(NullPointerException.class, () -> new NomeTalhao(null));
     }
 
-    // F-05 RN-040: nome deve ter entre 2 e 80 caracteres
+    // F-05 RN-040: nome deve ter entre 2 e 100 caracteres
     @Test
     void deveRejeitarNomeComUmCaractere() {
         assertThrows(IllegalArgumentException.class, () -> new NomeTalhao("A"));
     }
 
     @Test
-    void deveRejeitarNomeComOitentaEUmCaracteres() {
-        assertThrows(IllegalArgumentException.class, () -> new NomeTalhao("A".repeat(81)));
+    void deveRejeitarNomeComCemEUmCaracteres() {
+        assertThrows(IllegalArgumentException.class, () -> new NomeTalhao("A".repeat(101)));
     }
 
     @Test
