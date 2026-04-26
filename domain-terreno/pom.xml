@@ -17,9 +17,15 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!-- Steps implementados na Entrega 2 — runner excluido ate la -->
+					<excludes>
+						<exclude>**/RunCucumberTest.java</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
-	</build>     
+	</build>
 
     <dependencies>
         <dependency>
