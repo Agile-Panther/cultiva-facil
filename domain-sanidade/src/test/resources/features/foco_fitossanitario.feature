@@ -16,22 +16,34 @@ Funcionalidade: Monitoramento de Focos Fitossanitarios
     Entao o sistema rejeita com erro "ZONA_SEM_CICLO_ATIVO"
 
   @F10-US20-RN066
-  Cenário: Tipo agronomico invalido rejeitado
-    Dado que o Peao informa o tipo agronomico "Infefstacao"
+  Esquema do Cenário: Tipo agronomico invalido rejeitado
+    Dado que o Peao informa o tipo agronomico <tipo>
     Quando submete o registro do Foco
     Entao o sistema rejeita com erro "TIPO_AGRONOMICO_INVALIDO"
 
+    Exemplos:
+      | tipo         |
+      | "Infestacao" |
+
   @F10-US20-RN067
-  Cenario: Nivel de infestacao invalido rejeitado
-    Dado que o Peao informa nivel de infestacao "Critico"
+  Esquema do Cenario: Nivel de infestacao invalido rejeitado
+    Dado que o Peao informa nivel de infestacao <nivel>
     Quando submete o registro do Foco
     Entao o sistema rejeita com erro "NIVEL_INFESTACAO_INVALIDO"
 
+    Exemplos:
+      | nivel     |
+      | "Critico" |
+
   @F10-US20-RN068
-  Cenario: Severidade invalida rejeitada
-    Dado que o Peao informa severidade "Altissima"
+  Esquema do Cenario: Severidade invalida rejeitada
+    Dado que o Peao informa severidade <severidade>
     Quando submete o registro do Foco
     Entao o sistema rejeita com erro "SEVERIDADE_INVALIDA"
+
+    Exemplos:
+      | severidade  |
+      | "Altissima" |
 
   @F10-US20-RN069a
   Cenario: Descricao abaixo do minimo rejeitada
