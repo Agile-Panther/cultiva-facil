@@ -6,12 +6,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.agilepanther</groupId>
-        <artifactId>CultivaFacil-parent</artifactId>
+        <groupId>br.edu.cesar</groupId>
+        <artifactId>cultiva-facil-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>CultivaFacil-infrastructure</artifactId>
+    <artifactId>cultiva-facil-infrastructure</artifactId>
 
     <dependencies>
         <dependency>
@@ -21,8 +21,20 @@
     
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>CultivaFacil-application</artifactId>
+            <artifactId>cultiva-facil-application</artifactId>
             <version>${project.version}</version>
-        </dependency>        
+        </dependency>
+
+		<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		    <scope>test</scope>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-jpa-test</artifactId>
+		    <scope>test</scope>
+		</dependency>		
     </dependencies>
 </project>
