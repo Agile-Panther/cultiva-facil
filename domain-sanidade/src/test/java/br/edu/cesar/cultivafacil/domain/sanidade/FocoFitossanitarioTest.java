@@ -1,11 +1,11 @@
-package br.com.cultivafacil.domain.manejo.model;
+package br.edu.cesar.cultivafacil.domain.sanidade;
 
-import br.com.cultivafacil.domain.manejo.event.FocoRegistrado;
-import br.com.cultivafacil.domain.manejo.vo.*;
+import br.edu.cesar.cultivafacil.domain.sanidade.foco.*;
+import br.edu.cesar.cultivafacil.domain.cultivo.ciclo.CicloAgricolaId;
+import br.edu.cesar.cultivafacil.domain.terreno.talhao.TalhaoId;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +15,7 @@ class FocoFitossanitarioTest {
     @Test
     void deveCriarFocoFitossanitarioComSucesso() {
         // Arrange
-        ZonaId zonaId = ZonaId.novo();
+        TalhaoId talhaoId = TalhaoId.novo();
         CicloAgricolaId cicloAgricolaId = CicloAgricolaId.novo();
         TipoAgronomicoFoco tipo = TipoAgronomicoFoco.PRAGA;
         NivelInfestacao nivel = NivelInfestacao.BAIXO;
@@ -23,12 +23,12 @@ class FocoFitossanitarioTest {
         DescricaoFoco descricao = new DescricaoFoco("Descrição de teste válida.");
 
         // Act
-        FocoFitossanitario foco = new FocoFitossanitario(zonaId, cicloAgricolaId, tipo, nivel, severidade, descricao);
+        FocoFitossanitario foco = new FocoFitossanitario(talhaoId, cicloAgricolaId, tipo, nivel, severidade, descricao);
 
         // Assert
         assertNotNull(foco);
         assertNotNull(foco.getId());
-        assertEquals(zonaId, foco.getZonaId());
+        assertEquals(talhaoId, foco.getZonaId());
         assertEquals(cicloAgricolaId, foco.getCicloAgricolaId());
         assertEquals(tipo, foco.getTipo());
         assertEquals(nivel, foco.getNivel());

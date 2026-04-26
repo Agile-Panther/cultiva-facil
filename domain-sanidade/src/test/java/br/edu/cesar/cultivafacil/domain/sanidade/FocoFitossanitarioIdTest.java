@@ -1,4 +1,6 @@
-package br.com.cultivafacil.domain.manejo.vo;
+package br.edu.cesar.cultivafacil.domain.sanidade;
+
+import br.edu.cesar.cultivafacil.domain.sanidade.foco.FocoFitossanitarioId;
 
 import org.junit.jupiter.api.Test;
 import java.util.UUID;

@@ -1,6 +1,7 @@
-package br.com.cultivafacil.domain.manejo.vo;
+package br.edu.cesar.cultivafacil.domain.sanidade;
 
-import br.com.cultivafacil.domain.manejo.exception.DescricaoFocoInvalidaException;
+import br.edu.cesar.cultivafacil.domain.sanidade.foco.exception.DescricaoFocoInvalidaException;
+import br.edu.cesar.cultivafacil.domain.sanidade.foco.DescricaoFoco;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

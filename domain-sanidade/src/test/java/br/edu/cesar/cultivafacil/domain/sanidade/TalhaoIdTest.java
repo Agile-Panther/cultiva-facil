@@ -1,10 +1,11 @@
-package br.com.cultivafacil.domain.manejo.vo;
+package br.edu.cesar.cultivafacil.domain.sanidade;
 
+import br.edu.cesar.cultivafacil.domain.terreno.talhao.TalhaoId;
 import org.junit.jupiter.api.Test;
 import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
-class ZonaIdTest {
+class TalhaoIdTest {
 
     // Rastreabilidade: F-10 / RN-XX / cenário de sucesso
     @Test
@@ -13,7 +14,7 @@ class ZonaIdTest {
         UUID id = UUID.randomUUID();
 
         // Act
-        ZonaId zonaId = new ZonaId(id);
+        TalhaoId zonaId = new TalhaoId(id);
 
         // Assert
         assertNotNull(zonaId);
@@ -24,7 +25,7 @@ class ZonaIdTest {
     @Test
     void deveCriarNovaZonaId() {
         // Act
-        ZonaId zonaId = ZonaId.novo();
+        TalhaoId zonaId = TalhaoId.novo();
 
         // Assert
         assertNotNull(zonaId);
