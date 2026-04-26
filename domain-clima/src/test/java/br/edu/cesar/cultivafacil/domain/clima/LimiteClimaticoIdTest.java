@@ -1,4 +1,4 @@
-package br.com.cultivafacil.domain.clima.vo;
+package br.edu.cesar.cultivafacil.domain.clima;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,14 +7,14 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AlertaClimaticoIdTest {
+class LimiteClimaticoIdTest {
 
     // Rastreabilidade: F-17 / RN-XX / cenário de criação com sucesso
     @Test
-    @DisplayName("Deve Criar AlertaClimaticoId Novo")
-    void deveCriarAlertaClimaticoIdNovo() {
+    @DisplayName("Deve Criar LimiteClimaticoId Novo")
+    void deveCriarLimiteClimaticoIdNovo() {
         // Act
-        AlertaClimaticoId id = AlertaClimaticoId.novo();
+        LimiteClimaticoId id = LimiteClimaticoId.novo();
 
         // Assert
         assertNotNull(id);
@@ -23,13 +23,13 @@ class AlertaClimaticoIdTest {
 
     // Rastreabilidade: F-17 / RN-XX / cenário de criação com UUID específico
     @Test
-    @DisplayName("Deve Criar AlertaClimaticoId com UUID Específico")
-    void deveCriarAlertaClimaticoIdComUuidEspecifico() {
+    @DisplayName("Deve Criar LimiteClimaticoId com UUID Específico")
+    void deveCriarLimiteClimaticoIdComUuidEspecifico() {
         // Arrange
         UUID uuid = UUID.randomUUID();
 
         // Act
-        AlertaClimaticoId id = new AlertaClimaticoId(uuid);
+        LimiteClimaticoId id = new LimiteClimaticoId(uuid);
 
         // Assert
         assertNotNull(id);
@@ -38,11 +38,11 @@ class AlertaClimaticoIdTest {
 
     // Rastreabilidade: F-17 / RN-XX / cenário de falha com UUID nulo
     @Test
-    @DisplayName("Não Deve Criar AlertaClimaticoId com UUID Nulo")
-    void naoDeveCriarAlertaClimaticoIdComUuidNulo() {
+    @DisplayName("Não Deve Criar LimiteClimaticoId com UUID Nulo")
+    void naoDeveCriarLimiteClimaticoIdComUuidNulo() {
         // Act & Assert
         assertThrows(NullPointerException.class, () -> {
-            new AlertaClimaticoId(null);
+            new LimiteClimaticoId(null);
         });
     }
 }

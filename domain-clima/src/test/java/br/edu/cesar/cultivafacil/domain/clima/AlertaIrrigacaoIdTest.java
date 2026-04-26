@@ -1,4 +1,4 @@
-package br.com.cultivafacil.domain.clima.vo;
+package br.edu.cesar.cultivafacil.domain.clima;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

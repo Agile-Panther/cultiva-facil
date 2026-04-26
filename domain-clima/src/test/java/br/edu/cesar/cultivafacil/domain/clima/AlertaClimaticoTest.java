@@ -1,4 +1,4 @@
-package br.com.cultivafacil.domain.clima.model;
+package br.edu.cesar.cultivafacil.domain.clima;
 
 import br.com.cultivafacil.domain.clima.vo.AlertaClimaticoId;
 import br.com.cultivafacil.domain.clima.vo.LimiteClimaticoId;
