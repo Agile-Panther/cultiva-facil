@@ -1,15 +1,14 @@
 package br.edu.cesar.cultivafacil.domain.terreno.talhao;
 
-import java.util.UUID;
 import java.util.Objects;
-import org.apache.commons.lang3.Validate;
+import java.util.UUID;
 
 public final class TalhaoId {
 
     private final UUID valor;
 
     public TalhaoId(UUID valor) {
-        Validate.notNull(valor, "O ID da zona não pode ser nulo.");
+        Objects.requireNonNull(valor, "TalhaoId não pode ser nulo");
         this.valor = valor;
     }
 
@@ -24,14 +23,14 @@ public final class TalhaoId {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TalhaoId zonaId = (TalhaoId) o;
-        return Objects.equals(valor, zonaId.valor);
+        if (!(o instanceof TalhaoId)) return false;
+        TalhaoId that = (TalhaoId) o;
+        return valor.equals(that.valor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(valor);
+        return valor.hashCode();
     }
 
     @Override

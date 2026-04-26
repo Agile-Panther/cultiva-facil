@@ -1,15 +1,14 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.ciclo;
 
-import java.util.UUID;
 import java.util.Objects;
-import org.apache.commons.lang3.Validate;
+import java.util.UUID;
 
 public final class CicloAgricolaId {
 
     private final UUID valor;
 
     public CicloAgricolaId(UUID valor) {
-        Validate.notNull(valor, "O ID do ciclo agrícola não pode ser nulo.");
+        Objects.requireNonNull(valor, "CicloAgricolaId não pode ser nulo");
         this.valor = valor;
     }
 
@@ -24,14 +23,14 @@ public final class CicloAgricolaId {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CicloAgricolaId)) return false;
         CicloAgricolaId that = (CicloAgricolaId) o;
-        return Objects.equals(valor, that.valor);
+        return valor.equals(that.valor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(valor);
+        return valor.hashCode();
     }
 
     @Override
