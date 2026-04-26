@@ -1,23 +1,33 @@
 package br.edu.cesar.cultivafacil.domain.colheita.celeiro;
 
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.util.Objects;
 
-public class MetaComerciavel {
+public final class MetaComerciavel {
 
-    private final UUID id;
-    private final double valor;
+    private final BigDecimal valor;
 
-    public MetaComerciavel(double valor) {
-        if (valor <= 0) throw new IllegalArgumentException("META_COMERCIALIZAVEL_INVALIDA");
-        this.id = UUID.randomUUID();
+    public MetaComerciavel(BigDecimal valor) {
+        Objects.requireNonNull(valor, "Valor não pode ser nulo");
+        if (valor.compareTo(BigDecimal.ZERO) <= 0) throw new IllegalArgumentException("META_COMERCIALIZAVEL_INVALIDA");
         this.valor = valor;
     }
 
-    public MetaComerciavel(UUID id, double valor) {
-        this.id = id;
-        this.valor = valor;
+    public boolean projecaoAbaixoDaMeta(BigDecimal projecao) {
+        return projecao.compareTo(valor) < 0;
     }
 
-    public UUID getId() { return id; }
-    public double getValor() { return valor; }
+    public BigDecimal getValor() { return valor; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MetaComerciavel)) return false;
+        return valor.compareTo(((MetaComerciavel) o).valor) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return valor.stripTrailingZeros().hashCode();
+    }
 }

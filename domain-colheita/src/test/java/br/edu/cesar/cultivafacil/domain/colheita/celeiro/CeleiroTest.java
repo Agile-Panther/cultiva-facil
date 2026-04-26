@@ -5,6 +5,7 @@ import br.edu.cesar.cultivafacil.domain.terreno.talhao.TalhaoId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -22,34 +23,34 @@ class CeleiroTest {
     void setUp() {
         talhaoId = new TalhaoId(UUID.randomUUID());
         cicloId = new CicloAgricolaId(UUID.randomUUID());
-        item = new ItemCeleiro("Tomate", 200);
+        item = new ItemCeleiro("Tomate", BigDecimal.valueOf(200));
         celeiro = new Celeiro(talhaoId, cicloId, item);
     }
 
     // US-24: projecao correta
     @Test
     void deveCalcularProjecaoCorretamente() {
-        celeiro.registrarPerda(30);
-        assertEquals(170, celeiro.calcularProjecao(), 0.001);
+        celeiro.registrarPerda(BigDecimal.valueOf(30));
+        assertEquals(0, BigDecimal.valueOf(170).compareTo(celeiro.calcularProjecao()));
     }
 
     // US-24: saldo inicial igual a quantidade plantada
     @Test
     void deveTerSaldoInicialIgualAQuantidadePlantada() {
-        assertEquals(200, celeiro.getItem().getSaldoDisponivel(), 0.001);
+        assertEquals(0, BigDecimal.valueOf(200).compareTo(celeiro.getItem().getSaldoDisponivel()));
     }
 
     // RN-090a: meta zero rejeitada
     @Test
     void deveRejeitarMetaComerciavelZero() {
-        var ex = assertThrows(IllegalArgumentException.class, () -> celeiro.definirMeta(0));
+        var ex = assertThrows(IllegalArgumentException.class, () -> celeiro.definirMeta(BigDecimal.ZERO));
         assertEquals("META_COMERCIALIZAVEL_INVALIDA", ex.getMessage());
     }
 
     // RN-090b: meta maior que plantado rejeitada
     @Test
     void deveRejeitarMetaComerciavelSuperiorAoPlantado() {
-        var ex = assertThrows(IllegalArgumentException.class, () -> celeiro.definirMeta(250));
+        var ex = assertThrows(IllegalArgumentException.class, () -> celeiro.definirMeta(BigDecimal.valueOf(250)));
         assertEquals("META_COMERCIALIZAVEL_INVALIDA", ex.getMessage());
     }
 
@@ -57,15 +58,15 @@ class CeleiroTest {
     @Test
     void deveRejeitarDefinicaoDeMetaComCicloEncerrado() {
         celeiro.encerrarCiclo();
-        var ex = assertThrows(IllegalArgumentException.class, () -> celeiro.definirMeta(150));
+        var ex = assertThrows(IllegalArgumentException.class, () -> celeiro.definirMeta(BigDecimal.valueOf(150)));
         assertEquals("CICLO_ENCERRADO", ex.getMessage());
     }
 
     // US-36: alerta emitido quando projecao cai abaixo da meta
     @Test
     void deveEmitirAlertaQuandoProjecaoCaiAbaixoDaMeta() {
-        celeiro.definirMeta(150);
-        celeiro.registrarPerda(60);
+        celeiro.definirMeta(BigDecimal.valueOf(150));
+        celeiro.registrarPerda(BigDecimal.valueOf(60));
         assertEquals(1, celeiro.getEventos().size());
         assertInstanceOf(Celeiro.AlertaProjecao.class, celeiro.getEventos().get(0));
     }
@@ -75,21 +76,22 @@ class CeleiroTest {
     void deveBloquearSegundoAlertaEm24Horas() {
         var celeiroComAlerta = new Celeiro(
                 CeleiroId.novo(), talhaoId, cicloId, true,
-                new ItemCeleiro(UUID.randomUUID(), "Milho", 200, 50, 150),
-                new MetaComerciavel(150),
+                new ItemCeleiro(UUID.randomUUID(), "Milho",
+                        BigDecimal.valueOf(200), BigDecimal.valueOf(50), BigDecimal.valueOf(150)),
+                new MetaComerciavel(BigDecimal.valueOf(150)),
                 new ArrayList<>(),
                 new ArrayList<>(),
                 LocalDateTime.now().minusHours(6)
         );
-        var ex = assertThrows(IllegalArgumentException.class, () -> celeiroComAlerta.registrarPerda(10));
+        var ex = assertThrows(IllegalArgumentException.class, () -> celeiroComAlerta.registrarPerda(BigDecimal.TEN));
         assertEquals("FREQUENCIA_ALERTA_EXCEDIDA", ex.getMessage());
     }
 
     // US-25: saida registrada com sucesso
     @Test
     void deveRegistrarSaidaComSucesso() {
-        celeiro.registrarSaida(100, MotivoSaida.VENDA);
-        assertEquals(100, celeiro.getItem().getSaldoDisponivel(), 0.001);
+        celeiro.registrarSaida(BigDecimal.valueOf(100), MotivoSaida.VENDA);
+        assertEquals(0, BigDecimal.valueOf(100).compareTo(celeiro.getItem().getSaldoDisponivel()));
         assertEquals(1, celeiro.getSaidas().size());
     }
 
@@ -97,7 +99,7 @@ class CeleiroTest {
     @Test
     void deveRejeitarSaidaMaiorQueSaldo() {
         var ex = assertThrows(IllegalArgumentException.class,
-                () -> celeiro.registrarSaida(250, MotivoSaida.VENDA));
+                () -> celeiro.registrarSaida(BigDecimal.valueOf(250), MotivoSaida.VENDA));
         assertEquals("SALDO_INSUFICIENTE", ex.getMessage());
     }
 
@@ -105,7 +107,7 @@ class CeleiroTest {
     @Test
     void deveRejeitarSaidaManualComMotivoPerda() {
         var ex = assertThrows(IllegalArgumentException.class,
-                () -> celeiro.registrarSaida(50, MotivoSaida.PERDA));
+                () -> celeiro.registrarSaida(BigDecimal.valueOf(50), MotivoSaida.PERDA));
         assertEquals("MOTIVO_SAIDA_INVALIDO", ex.getMessage());
     }
 
@@ -119,11 +121,11 @@ class CeleiroTest {
     // US-37: relatorio com dados consolidados
     @Test
     void deveGerarRelatorioComDadosConsolidados() {
-        celeiro.registrarPerda(15);
+        celeiro.registrarPerda(BigDecimal.valueOf(15));
         celeiro.encerrarCiclo();
         RelatorioPerda relatorio = celeiro.gerarRelatorioPerda();
-        assertEquals(200, relatorio.getQuantidadePlantada(), 0.001);
-        assertEquals(15, relatorio.getPerdasAcumuladas(), 0.001);
+        assertEquals(0, BigDecimal.valueOf(200).compareTo(relatorio.getQuantidadePlantada()));
+        assertEquals(0, BigDecimal.valueOf(15).compareTo(relatorio.getPerdasAcumuladas()));
     }
 
     // RN-098a: nome de configuracao invalido rejeitado

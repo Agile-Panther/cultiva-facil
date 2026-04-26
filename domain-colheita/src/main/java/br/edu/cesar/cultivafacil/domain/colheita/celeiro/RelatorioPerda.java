@@ -1,22 +1,24 @@
 package br.edu.cesar.cultivafacil.domain.colheita.celeiro;
 
+import java.math.BigDecimal;
+
 public class RelatorioPerda {
 
-    private final double quantidadePlantada;
-    private final double perdasAcumuladas;
-    private final double projecaoOriginal;
-    private final double saldoFinal;
+    private final BigDecimal quantidadePlantada;
+    private final BigDecimal perdasAcumuladas;
+    private final BigDecimal projecaoOriginal;
+    private final BigDecimal saldoFinal;
 
-    public RelatorioPerda(double quantidadePlantada, double perdasAcumuladas,
-                          double projecaoOriginal, double saldoFinal) {
+    public RelatorioPerda(BigDecimal quantidadePlantada, BigDecimal perdasAcumuladas,
+                          BigDecimal projecaoOriginal, BigDecimal saldoFinal) {
         this.quantidadePlantada = quantidadePlantada;
         this.perdasAcumuladas = perdasAcumuladas;
         this.projecaoOriginal = projecaoOriginal;
         this.saldoFinal = saldoFinal;
     }
 
-    public double getQuantidadePlantada() { return quantidadePlantada; }
-    public double getPerdasAcumuladas() { return perdasAcumuladas; }
-    public double getProjecaoOriginal() { return projecaoOriginal; }
-    public double getSaldoFinal() { return saldoFinal; }
+    public BigDecimal getQuantidadePlantada() { return quantidadePlantada; }
+    public BigDecimal getPerdasAcumuladas() { return perdasAcumuladas; }
+    public BigDecimal getProjecaoOriginal() { return projecaoOriginal; }
+    public BigDecimal getSaldoFinal() { return saldoFinal; }
 }

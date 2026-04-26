@@ -3,6 +3,7 @@ package br.edu.cesar.cultivafacil.domain.colheita.celeiro;
 import br.edu.cesar.cultivafacil.domain.cultivo.ciclo.CicloAgricolaId;
 import br.edu.cesar.cultivafacil.domain.terreno.talhao.TalhaoId;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +24,7 @@ public class Celeiro {
     private final List<SaidaCeleiro> saidas;
     private final List<ConfiguracaoRelatorio> configuracoes;
     private LocalDateTime ultimoAlertaEmitidoEm;
-    private final List<Object> eventos;
+    private final List<EventoDominio> eventos;
 
     public Celeiro(TalhaoId talhaoId, CicloAgricolaId cicloAgricolaId, ItemCeleiro item) {
         Objects.requireNonNull(talhaoId, "TalhaoId não pode ser nulo");
@@ -57,27 +58,28 @@ public class Celeiro {
         this.eventos = new ArrayList<>();
     }
 
-    public void definirMeta(double valor) {
+    public void definirMeta(BigDecimal valor) {
+        Objects.requireNonNull(valor, "Valor não pode ser nulo");
         if (!cicloAtivo) throw new IllegalArgumentException("CICLO_ENCERRADO");
-        if (valor <= 0 || valor > item.getQuantidadePlantada())
+        if (valor.compareTo(BigDecimal.ZERO) <= 0 || valor.compareTo(item.getQuantidadePlantada()) > 0)
             throw new IllegalArgumentException("META_COMERCIALIZAVEL_INVALIDA");
         this.meta = new MetaComerciavel(valor);
     }
 
-    public void registrarPerda(double quantidade) {
-        if (quantidade <= 0) throw new IllegalArgumentException("Quantidade de perda deve ser positiva");
+    public void registrarPerda(BigDecimal quantidade) {
+        Objects.requireNonNull(quantidade, "Quantidade não pode ser nula");
+        if (quantidade.compareTo(BigDecimal.ZERO) <= 0)
+            throw new IllegalArgumentException("Quantidade de perda deve ser positiva");
         item.adicionarPerda(quantidade);
         verificarEDispararAlerta();
     }
 
-    public void registrarSaida(double quantidade, MotivoSaida motivo) {
+    public void registrarSaida(BigDecimal quantidade, MotivoSaida motivo) {
         Objects.requireNonNull(motivo, "Motivo não pode ser nulo");
         if (motivo == MotivoSaida.PERDA)
             throw new IllegalArgumentException("MOTIVO_SAIDA_INVALIDO");
-        if (quantidade > item.getSaldoDisponivel())
-            throw new IllegalArgumentException("SALDO_INSUFICIENTE");
-        item.reduzirSaldo(quantidade);
-        saidas.add(new SaidaCeleiro(quantidade, motivo));
+        item.registrarSaida(quantidade);
+        saidas.add(new SaidaCeleiro(quantidade, motivo, LocalDateTime.now()));
     }
 
     public void encerrarCiclo() {
@@ -114,13 +116,13 @@ public class Celeiro {
         );
     }
 
-    public double calcularProjecao() {
-        return item.getQuantidadePlantada() - item.getPerdasAcumuladas();
+    public BigDecimal calcularProjecao() {
+        return item.calcularProjecao();
     }
 
     private void verificarEDispararAlerta() {
         if (meta == null) return;
-        if (calcularProjecao() >= meta.getValor()) return;
+        if (!meta.projecaoAbaixoDaMeta(item.calcularProjecao())) return;
         if (ultimoAlertaEmitidoEm != null &&
                 LocalDateTime.now().isBefore(ultimoAlertaEmitidoEm.plusHours(INTERVALO_ALERTA_HORAS))) {
             throw new IllegalArgumentException("FREQUENCIA_ALERTA_EXCEDIDA");
@@ -138,17 +140,17 @@ public class Celeiro {
     public List<SaidaCeleiro> getSaidas() { return Collections.unmodifiableList(saidas); }
     public List<ConfiguracaoRelatorio> getConfiguracoes() { return Collections.unmodifiableList(configuracoes); }
     public LocalDateTime getUltimoAlertaEmitidoEm() { return ultimoAlertaEmitidoEm; }
-    public List<Object> getEventos() { return Collections.unmodifiableList(eventos); }
+    public List<EventoDominio> getEventos() { return Collections.unmodifiableList(eventos); }
 
-    public static class AlertaProjecao {
-        public final CeleiroId celeiroId;
-        public final TalhaoId talhaoId;
-        public final double projecaoAtual;
-        public final double metaComercializavel;
-        public final LocalDateTime emitidoEm;
+    public static class AlertaProjecao implements EventoDominio {
+        private final CeleiroId celeiroId;
+        private final TalhaoId talhaoId;
+        private final BigDecimal projecaoAtual;
+        private final BigDecimal metaComercializavel;
+        private final LocalDateTime emitidoEm;
 
         public AlertaProjecao(CeleiroId celeiroId, TalhaoId talhaoId,
-                              double projecaoAtual, double metaComercializavel,
+                              BigDecimal projecaoAtual, BigDecimal metaComercializavel,
                               LocalDateTime emitidoEm) {
             this.celeiroId = celeiroId;
             this.talhaoId = talhaoId;
@@ -156,5 +158,11 @@ public class Celeiro {
             this.metaComercializavel = metaComercializavel;
             this.emitidoEm = emitidoEm;
         }
+
+        public CeleiroId getCeleiroId() { return celeiroId; }
+        public TalhaoId getTalhaoId() { return talhaoId; }
+        public BigDecimal getProjecaoAtual() { return projecaoAtual; }
+        public BigDecimal getMetaComercializavel() { return metaComercializavel; }
+        public LocalDateTime getEmitidoEm() { return emitidoEm; }
     }
 }
