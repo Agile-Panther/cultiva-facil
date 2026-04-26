@@ -6,17 +6,52 @@
 	<modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.agilepanther</groupId>
-        <artifactId>CultivaFacil-parent</artifactId>
+        <groupId>br.edu.cesar</groupId>
+        <artifactId>cultiva-facil-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>CultivaFacil-application</artifactId>
+    <artifactId>cultiva-facil-application</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>CultivaFacil-domain</artifactId>
+            <artifactId>cultiva-facil-domain-acesso</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>cultiva-facil-domain-terreno</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>cultiva-facil-domain-cultivo</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>cultiva-facil-domain-agenda</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>cultiva-facil-domain-sanidade</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>cultiva-facil-domain-colheita</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>cultiva-facil-domain-insumo</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>cultiva-facil-domain-clima</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
