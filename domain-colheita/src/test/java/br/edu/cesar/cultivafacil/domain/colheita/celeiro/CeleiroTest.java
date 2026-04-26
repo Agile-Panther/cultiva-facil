@@ -163,4 +163,22 @@ class CeleiroTest {
         assertEquals(1, celeiro.getConfiguracoes().size());
         assertEquals("Safra Verao 2026", celeiro.getConfiguracoes().get(0).getNome());
     }
+
+    // RN-101: consulta sem configuracao persistida rejeitada
+    @Test
+    void deveRejeitarConsultaSemConfiguracaoPersistida() {
+        var ex = assertThrows(IllegalArgumentException.class,
+                () -> celeiro.buscarConfiguracao("Safra Verao 2026"));
+        assertEquals("CONFIGURACAO_INEXISTENTE", ex.getMessage());
+    }
+
+    // US-27: retorna configuracao quando existe
+    @Test
+    void deveRetornarConfiguracaoExistente() {
+        celeiro.adicionarConfiguracao("Safra Verao 2026", FiltroPeriodo.SEMESTRE);
+        var resultado = celeiro.buscarConfiguracao("Safra Verao 2026");
+        assertNotNull(resultado);
+        assertEquals("Safra Verao 2026", resultado.getNome());
+        assertEquals(FiltroPeriodo.SEMESTRE, resultado.getPeriodo());
+    }
 }

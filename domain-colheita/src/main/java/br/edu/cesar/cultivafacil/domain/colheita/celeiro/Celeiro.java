@@ -95,6 +95,15 @@ public class Celeiro {
         configuracoes.add(new ConfiguracaoRelatorio(nome.trim(), periodo));
     }
 
+    public ConfiguracaoRelatorio buscarConfiguracao(String nome) {
+        if (nome == null || nome.isBlank())
+            throw new IllegalArgumentException("CONFIGURACAO_INEXISTENTE");
+        return configuracoes.stream()
+                .filter(c -> c.getNome().equals(nome.trim()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("CONFIGURACAO_INEXISTENTE"));
+    }
+
     public RelatorioPerda gerarRelatorioPerda() {
         if (cicloAtivo) throw new IllegalArgumentException("RELATORIO_CICLO_ATIVO");
         return new RelatorioPerda(
