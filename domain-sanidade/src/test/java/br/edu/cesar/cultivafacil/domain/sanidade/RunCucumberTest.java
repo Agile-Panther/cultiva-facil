@@ -1,3 +1,5 @@
+package br.edu.cesar.cultivafacil.domain.sanidade;
+
 import static io.cucumber.core.options.Constants.PLUGIN_PROPERTY_NAME;
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
