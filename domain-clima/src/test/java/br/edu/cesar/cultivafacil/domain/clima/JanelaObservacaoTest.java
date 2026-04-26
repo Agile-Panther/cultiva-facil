@@ -1,6 +1,7 @@
 package br.edu.cesar.cultivafacil.domain.clima;
 
-import br.com.cultivafacil.domain.clima.exception.JanelaObservacaoInvalidaException;
+import br.edu.cesar.cultivafacil.domain.clima.limite.JanelaObservacao;
+import br.edu.cesar.cultivafacil.domain.clima.limite.exception.JanelaObservacaoInvalidaException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

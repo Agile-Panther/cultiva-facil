@@ -1,6 +1,7 @@
 package br.edu.cesar.cultivafacil.domain.clima;
 
-import br.com.cultivafacil.domain.clima.exception.PrecipitacaoLimiteInvalidaException;
+import br.edu.cesar.cultivafacil.domain.clima.limite.PrecipitacaoLimite;
+import br.edu.cesar.cultivafacil.domain.clima.limite.exception.PrecipitacaoLimiteInvalidaException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

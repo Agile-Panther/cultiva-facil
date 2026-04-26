@@ -1,9 +1,10 @@
 package br.edu.cesar.cultivafacil.domain.clima;
 
-import br.com.cultivafacil.domain.clima.vo.JanelaObservacao;
-import br.com.cultivafacil.domain.clima.vo.LimiteClimaticoId;
-import br.com.cultivafacil.domain.clima.vo.PrecipitacaoLimite;
-import br.com.cultivafacil.domain.clima.vo.TemperaturaLimite;
+import br.edu.cesar.cultivafacil.domain.clima.limite.JanelaObservacao;
+import br.edu.cesar.cultivafacil.domain.clima.limite.LimiteClimatico;
+import br.edu.cesar.cultivafacil.domain.clima.limite.LimiteClimaticoId;
+import br.edu.cesar.cultivafacil.domain.clima.limite.PrecipitacaoLimite;
+import br.edu.cesar.cultivafacil.domain.clima.limite.TemperaturaLimite;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

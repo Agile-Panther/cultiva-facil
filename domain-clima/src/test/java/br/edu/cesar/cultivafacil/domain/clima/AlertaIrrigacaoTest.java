@@ -1,7 +1,8 @@
 package br.edu.cesar.cultivafacil.domain.clima;
 
-import br.com.cultivafacil.domain.clima.vo.AlertaIrrigacaoId;
-import br.com.cultivafacil.domain.clima.vo.NecessidadeHidrica;
+import br.edu.cesar.cultivafacil.domain.clima.alertaIrrigacao.AlertaIrrigacao;
+import br.edu.cesar.cultivafacil.domain.clima.alertaIrrigacao.AlertaIrrigacaoId;
+import br.edu.cesar.cultivafacil.domain.clima.limite.NecessidadeHidrica;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

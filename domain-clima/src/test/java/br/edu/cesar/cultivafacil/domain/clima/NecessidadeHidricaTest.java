@@ -1,6 +1,7 @@
 package br.edu.cesar.cultivafacil.domain.clima;
 
-import br.com.cultivafacil.domain.clima.exception.NecessidadeHidricaInvalidaException;
+import br.edu.cesar.cultivafacil.domain.clima.limite.NecessidadeHidrica;
+import br.edu.cesar.cultivafacil.domain.clima.limite.exception.NecessidadeHidricaInvalidaException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
