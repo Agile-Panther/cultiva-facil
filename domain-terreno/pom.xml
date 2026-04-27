@@ -13,14 +13,6 @@
 
     <artifactId>cultiva-facil-domain-terreno</artifactId>
     
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>     
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
