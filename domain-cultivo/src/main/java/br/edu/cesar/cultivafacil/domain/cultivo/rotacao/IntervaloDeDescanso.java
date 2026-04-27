@@ -1,24 +1,25 @@
-package br.edu.cesar.cultivafacil.domain.cultivo.ciclo;
+package br.edu.cesar.cultivafacil.domain.cultivo.rotacao;
 
-import br.edu.cesar.cultivafacil.domain.terreno.talhao.TalhaoId;
+import br.edu.cesar.cultivafacil.domain.cultivo.ciclo.NomeCultura;
+import br.edu.cesar.cultivafacil.domain.terreno.zona.ZonaId;
 import org.apache.commons.lang3.Validate;
 
 import java.time.LocalDate;
 
 public class IntervalodeDescanso {
 
-    private final TalhaoId talhaoId;
+    private final ZonaId zonaId;
     private final NomeCultura cultura;
     private final DiasDescanso dias;
     private final LocalDate dataUltimaColheita;
 
-    public IntervalodeDescanso(TalhaoId talhaoId, NomeCultura cultura,
+    public IntervalodeDescanso(ZonaId zonaId, NomeCultura cultura,
                                DiasDescanso dias, LocalDate dataUltimaColheita) {
-        Validate.notNull(talhaoId, "talhaoId e obrigatorio");
+        Validate.notNull(zonaId, "zonaId e obrigatorio");
         Validate.notNull(cultura, "cultura e obrigatoria");
         Validate.notNull(dias, "dias e obrigatorio");
         Validate.notNull(dataUltimaColheita, "dataUltimaColheita e obrigatoria");
-        this.talhaoId = talhaoId;
+        this.zonaId = zonaId;
         this.cultura = cultura;
         this.dias = dias;
         this.dataUltimaColheita = dataUltimaColheita;
@@ -28,7 +29,7 @@ public class IntervalodeDescanso {
         return !dataVinculo.isBefore(dataUltimaColheita.plusDays(dias.getValor()));
     }
 
-    public TalhaoId getTalhaoId() { return talhaoId; }
+    public ZonaId getZonaId() { return zonaId; }
     public NomeCultura getCultura() { return cultura; }
     public DiasDescanso getDias() { return dias; }
     public LocalDate getDataUltimaColheita() { return dataUltimaColheita; }

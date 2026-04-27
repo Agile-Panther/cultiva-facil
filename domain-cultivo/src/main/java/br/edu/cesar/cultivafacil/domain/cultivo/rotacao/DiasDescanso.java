@@ -1,4 +1,4 @@
-package br.edu.cesar.cultivafacil.domain.cultivo.ciclo;
+package br.edu.cesar.cultivafacil.domain.cultivo.rotacao;
 
 import org.apache.commons.lang3.Validate;
 

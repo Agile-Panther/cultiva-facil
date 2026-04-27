@@ -1,4 +1,4 @@
-package br.edu.cesar.cultivafacil.domain.cultivo.ciclo;
+package br.edu.cesar.cultivafacil.domain.cultivo.rotacao;
 
 import org.junit.jupiter.api.Test;
 
@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DiasDescansoTest {
 
-    // F-08 RN-052 — limites validos
+    // F-08 RN-052 — limites válidos
     @Test
     void deveAceitarLimiteInferior() {
         assertDoesNotThrow(() -> new DiasDescanso(1));
@@ -17,7 +17,7 @@ class DiasDescansoTest {
         assertDoesNotThrow(() -> new DiasDescanso(365));
     }
 
-    // F-08 RN-052 — limites invalidos
+    // F-08 RN-052 — limites inválidos
     @Test
     void deveRejeitarZeroDias() {
         assertThrows(IllegalArgumentException.class, () -> new DiasDescanso(0));
