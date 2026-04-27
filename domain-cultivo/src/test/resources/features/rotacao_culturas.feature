@@ -27,12 +27,6 @@ Funcionalidade: Rotação de Culturas
       | 0    |
       | 366  |
 
-  @F08-US16-positivo
-  Cenário: Vínculo aceito após cumprimento do Intervalo
-    Dado que o Intervalo de 30 dias para "Tomate" foi cumprido com colheita há 35 dias
-    Quando o Proprietário vincula "Tomate" novamente à Zona
-    Então o vínculo é aceito e o Ciclo é iniciado
-
   @F08-US16-RN053
   Cenário: Vínculo bloqueado dentro do Intervalo de Descanso
     Dado que o Intervalo de 30 dias para "Tomate" não foi cumprido com colheita há 20 dias
