@@ -26,6 +26,7 @@
         <module>domain-agenda</module>
         <module>domain-sanidade</module>
         <module>domain-colheita</module>
+        <module>domain-estoque</module>
         <module>domain-insumo</module>
         <module>domain-clima</module>
         <module>application</module>
