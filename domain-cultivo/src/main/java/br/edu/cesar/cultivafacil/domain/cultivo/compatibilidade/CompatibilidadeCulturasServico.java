@@ -1,56 +1,58 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.compatibilidade;
 
-import br.edu.cesar.cultivafacil.domain.cultivo.ciclo.NomeCultura;
-import br.edu.cesar.cultivafacil.domain.terreno.talhao.TalhaoId;
+import br.edu.cesar.cultivafacil.domain.cultivo.cultura.Cultura;
+import br.edu.cesar.cultivafacil.domain.cultivo.cultura.CulturaRepositorio;
+import br.edu.cesar.cultivafacil.domain.cultivo.cultura.NomeComumCultura;
+import br.edu.cesar.cultivafacil.domain.propriedade.propriedade.PropriedadeId;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public class CompatibilidadeCulturasServico {
 
+    private final CulturaRepositorio culturaRepositorio;
     private final RelacaoCompatibilidadeRepositorio relacaoRepositorio;
 
-    public CompatibilidadeCulturasServico(RelacaoCompatibilidadeRepositorio relacaoRepositorio) {
-        Objects.requireNonNull(relacaoRepositorio, "relacaoRepositorio obrigatorio");
-        this.relacaoRepositorio = relacaoRepositorio;
+    public CompatibilidadeCulturasServico(CulturaRepositorio culturaRepositorio,
+                                          RelacaoCompatibilidadeRepositorio relacaoRepositorio) {
+        this.culturaRepositorio = Objects.requireNonNull(culturaRepositorio, "culturaRepositorio obrigatorio");
+        this.relacaoRepositorio = Objects.requireNonNull(relacaoRepositorio, "relacaoRepositorio obrigatorio");
     }
 
-    // RN-047, RN-048, RN-049
-    public ConsorcioCultura registrarConsorcio(TalhaoId talhaoId, NomeCultura culturaAtiva,
-                                               NomeCultura culturaNova, boolean consentimento) {
-        Objects.requireNonNull(talhaoId, "talhaoId obrigatorio");
-        Objects.requireNonNull(culturaAtiva, "culturaAtiva obrigatoria");
-        Objects.requireNonNull(culturaNova, "culturaNova obrigatoria");
-
-        Optional<RelacaoCompatibilidade> relacao = relacaoRepositorio.buscarPorCulturas(culturaAtiva, culturaNova);
-
-        ClassificacaoConsorcio classificacao = ClassificacaoConsorcio.NEUTRA;
-        boolean ciencia = false;
-
-        if (relacao.isPresent()) {
-            classificacao = relacao.get().getClassificacao();
-            if (ClassificacaoConsorcio.INIMIGA.equals(classificacao)) {
-                if (!consentimento) {
-                    throw new IllegalStateException("INIMIGA_BLOQUEADA");
-                }
-                ciencia = true;
-            }
+    public ResultadoCompatibilidade verificar(PropriedadeId propriedadeId, List<String> nomesCulturas) {
+        Objects.requireNonNull(propriedadeId, "propriedadeId obrigatoria");
+        if (nomesCulturas == null || nomesCulturas.size() != 2) {
+            throw new IllegalArgumentException("CULTURA_INVALIDO");
         }
 
-        ConsorcioCultura consorcio = new ConsorcioCultura(talhaoId, culturaNova, classificacao, ciencia);
-        relacaoRepositorio.salvarConsorcio(consorcio);
-        return consorcio;
+        Cultura primeira = buscarCulturaAtiva(propriedadeId, nomesCulturas.get(0));
+        Cultura segunda = buscarCulturaAtiva(propriedadeId, nomesCulturas.get(1));
+
+        if (primeira.getId().equals(segunda.getId())
+            || primeira.getNomeComum().chaveNormalizada().equals(segunda.getNomeComum().chaveNormalizada())) {
+            throw new IllegalArgumentException("CULTURA_INVALIDO");
+        }
+
+        validarFamiliaCustomizada(primeira);
+        validarFamiliaCustomizada(segunda);
+
+        return relacaoRepositorio.buscarPorCulturas(primeira.getId(), segunda.getId())
+            .map(relacao -> new ResultadoCompatibilidade(relacao.getClassificacao(), relacao.getBeneficioAgronomico()))
+            .orElseGet(() -> new ResultadoCompatibilidade(ClassificacaoConsorcio.NEUTRA, ""));
     }
 
-    // RN-050
-    public List<ConsorcioCultura> consultarHistorico(TalhaoId talhaoId) {
-        Objects.requireNonNull(talhaoId, "talhaoId obrigatorio");
-
-        List<ConsorcioCultura> historico = relacaoRepositorio.listarConsorcioPorTalhao(talhaoId);
-        if (historico.isEmpty()) {
-            throw new IllegalStateException("HISTORICO_INEXISTENTE");
+    private Cultura buscarCulturaAtiva(PropriedadeId propriedadeId, String nome) {
+        Cultura cultura = culturaRepositorio.buscarPorNome(propriedadeId, new NomeComumCultura(nome))
+            .orElseThrow(() -> new IllegalArgumentException("CULTURA_INVALIDO"));
+        if (!cultura.ativa()) {
+            throw new IllegalArgumentException("CULTURA_INVALIDO");
         }
-        return historico;
+        return cultura;
+    }
+
+    private void validarFamiliaCustomizada(Cultura cultura) {
+        if (cultura.customizadaSemFamiliaBotanica()) {
+            throw new IllegalArgumentException("CULTURA_INVALIDO");
+        }
     }
 }

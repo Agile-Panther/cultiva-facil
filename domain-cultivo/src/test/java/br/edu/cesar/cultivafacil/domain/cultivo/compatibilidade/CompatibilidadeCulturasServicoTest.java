@@ -1,12 +1,11 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.compatibilidade;
 
-import br.edu.cesar.cultivafacil.domain.cultivo.ciclo.NomeCultura;
-import br.edu.cesar.cultivafacil.domain.terreno.talhao.TalhaoId;
+import br.edu.cesar.cultivafacil.domain.cultivo.cultura.Cultura;
+import br.edu.cesar.cultivafacil.domain.cultivo.cultura.CulturaRepositorio;
+import br.edu.cesar.cultivafacil.domain.cultivo.cultura.NomeComumCultura;
+import br.edu.cesar.cultivafacil.domain.propriedade.propriedade.PropriedadeId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,142 +13,93 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class CompatibilidadeCulturasServicoTest {
 
-    @Mock
+    private CulturaRepositorio culturaRepositorio;
     private RelacaoCompatibilidadeRepositorio relacaoRepositorio;
-
     private CompatibilidadeCulturasServico servico;
-
-    private TalhaoId talhaoId;
-    private NomeCultura culturaAtiva;
-    private NomeCultura culturaNova;
+    private PropriedadeId propriedadeId;
+    private Cultura milho;
+    private Cultura feijao;
 
     @BeforeEach
     void setUp() {
-        servico = new CompatibilidadeCulturasServico(relacaoRepositorio);
-        talhaoId = TalhaoId.novo();
-        culturaAtiva = new NomeCultura("Tomate");
-        culturaNova = new NomeCultura("Manjericão");
+        culturaRepositorio = mock(CulturaRepositorio.class);
+        relacaoRepositorio = mock(RelacaoCompatibilidadeRepositorio.class);
+        servico = new CompatibilidadeCulturasServico(culturaRepositorio, relacaoRepositorio);
+        propriedadeId = PropriedadeId.novo();
+        milho = Cultura.nativa(propriedadeId, "Milho", "AG-30", "Poaceae");
+        feijao = Cultura.nativa(propriedadeId, "Feijao", "Comum", "Fabaceae");
     }
 
-    // US-13 — RN-049: relação Companheira → status COMPANHEIRA
     @Test
-    void deveRegistrarConsorcioCulturaCompanheiraComStatusCompanheira() {
-        RelacaoCompatibilidade relacaoCompanheira = new RelacaoCompatibilidade(
-            culturaAtiva, culturaNova, ClassificacaoConsorcio.COMPANHEIRA);
-        when(relacaoRepositorio.buscarPorCulturas(culturaAtiva, culturaNova))
-            .thenReturn(Optional.of(relacaoCompanheira));
+    void deveAceitarCompatibilidadeEntreDuasCulturasAtivasCadastradas() {
+        prepararBusca(milho, feijao);
+        RelacaoCompatibilidade relacao = new RelacaoCompatibilidade(
+            milho.getId(), feijao.getId(), ClassificacaoConsorcio.COMPANHEIRA, "Fixação de nitrogenio");
+        when(relacaoRepositorio.buscarPorCulturas(milho.getId(), feijao.getId())).thenReturn(Optional.of(relacao));
 
-        ConsorcioCultura resultado = servico.registrarConsorcio(talhaoId, culturaAtiva, culturaNova, false);
+        ResultadoCompatibilidade resultado = servico.verificar(propriedadeId, List.of("Milho", "Feijao"));
 
         assertEquals(ClassificacaoConsorcio.COMPANHEIRA, resultado.getClassificacao());
-        assertFalse(resultado.isCienciaDoAgricultor());
-        verify(relacaoRepositorio).salvarConsorcio(resultado);
-    }
-
-    // US-13 — RN-049: sem relação definida → status NEUTRA, sem Companheira
-    @Test
-    void deveRegistrarConsorcioNeutroQuandoNaoHaRelacaoDefinida() {
-        when(relacaoRepositorio.buscarPorCulturas(culturaAtiva, culturaNova))
-            .thenReturn(Optional.empty());
-
-        ConsorcioCultura resultado = servico.registrarConsorcio(talhaoId, culturaAtiva, culturaNova, false);
-
-        assertEquals(ClassificacaoConsorcio.NEUTRA, resultado.getClassificacao());
-        assertFalse(resultado.isCienciaDoAgricultor());
-        verify(relacaoRepositorio).salvarConsorcio(resultado);
-    }
-
-    // US-13 — RN-047: cultura Inimiga sem consentimento → INIMIGA_BLOQUEADA
-    @Test
-    void deveRejeitarInimigaSemConsentimento() {
-        NomeCultura funcho = new NomeCultura("Funcho");
-        RelacaoCompatibilidade relacaoInimiga = new RelacaoCompatibilidade(
-            culturaAtiva, funcho, ClassificacaoConsorcio.INIMIGA);
-        when(relacaoRepositorio.buscarPorCulturas(culturaAtiva, funcho))
-            .thenReturn(Optional.of(relacaoInimiga));
-
-        IllegalStateException excecao = assertThrows(IllegalStateException.class,
-            () -> servico.registrarConsorcio(talhaoId, culturaAtiva, funcho, false));
-
-        assertTrue(excecao.getMessage().contains("INIMIGA_BLOQUEADA"));
-        verify(relacaoRepositorio, never()).salvarConsorcio(any());
-    }
-
-    // US-13 — RN-048: cultura Inimiga com consentimento → cienciaDoAgricultor = true
-    @Test
-    void deveRegistrarInimigaComConsentimentoECienciaAtiva() {
-        NomeCultura funcho = new NomeCultura("Funcho");
-        RelacaoCompatibilidade relacaoInimiga = new RelacaoCompatibilidade(
-            culturaAtiva, funcho, ClassificacaoConsorcio.INIMIGA);
-        when(relacaoRepositorio.buscarPorCulturas(culturaAtiva, funcho))
-            .thenReturn(Optional.of(relacaoInimiga));
-
-        ConsorcioCultura resultado = servico.registrarConsorcio(talhaoId, culturaAtiva, funcho, true);
-
-        assertEquals(ClassificacaoConsorcio.INIMIGA, resultado.getClassificacao());
-        assertTrue(resultado.isCienciaDoAgricultor());
-        verify(relacaoRepositorio).salvarConsorcio(resultado);
-    }
-
-    // US-14: histórico retornado quando há consórcios registrados
-    @Test
-    void deveRetornarHistoricoQuandoTalhaoTemConsorcios() {
-        NomeCultura cultura = new NomeCultura("Cenoura");
-        ConsorcioCultura consorcio = new ConsorcioCultura(talhaoId, cultura, ClassificacaoConsorcio.NEUTRA, false);
-        when(relacaoRepositorio.listarConsorcioPorTalhao(talhaoId)).thenReturn(List.of(consorcio));
-
-        List<ConsorcioCultura> historico = servico.consultarHistorico(talhaoId);
-
-        assertEquals(1, historico.size());
-        assertEquals(consorcio, historico.get(0));
-        verify(relacaoRepositorio).listarConsorcioPorTalhao(talhaoId);
-    }
-
-    // US-14 — RN-050: sem consórcios → HISTORICO_INEXISTENTE
-    @Test
-    void deveRejeitarHistoricoQuandoTalhaoSemNenhumConsorcio() {
-        when(relacaoRepositorio.listarConsorcioPorTalhao(talhaoId)).thenReturn(List.of());
-
-        IllegalStateException excecao = assertThrows(IllegalStateException.class,
-            () -> servico.consultarHistorico(talhaoId));
-
-        assertTrue(excecao.getMessage().contains("HISTORICO_INEXISTENTE"));
+        assertEquals("Fixação de nitrogenio", resultado.getBeneficioAgronomico());
     }
 
     @Test
-    void deveRejeitarRegistroComTalhaoIdNulo() {
-        assertThrows(NullPointerException.class,
-            () -> servico.registrarConsorcio(null, culturaAtiva, culturaNova, false));
+    void deveRejeitarCulturaAusenteDoCatalogo() {
+        when(culturaRepositorio.buscarPorNome(eq(propriedadeId), any(NomeComumCultura.class)))
+            .thenReturn(Optional.of(milho), Optional.empty());
+
+        IllegalArgumentException excecao = assertThrows(IllegalArgumentException.class,
+            () -> servico.verificar(propriedadeId, List.of("Milho", "Feijao")));
+
+        assertTrue(excecao.getMessage().contains("CULTURA_INVALIDO"));
     }
 
     @Test
-    void deveRejeitarRegistroComCulturaAtivaNula() {
-        assertThrows(NullPointerException.class,
-            () -> servico.registrarConsorcio(talhaoId, null, culturaNova, false));
+    void deveRejeitarCulturaInativa() {
+        feijao.inativar();
+        prepararBusca(milho, feijao);
+
+        IllegalArgumentException excecao = assertThrows(IllegalArgumentException.class,
+            () -> servico.verificar(propriedadeId, List.of("Milho", "Feijao")));
+
+        assertTrue(excecao.getMessage().contains("CULTURA_INVALIDO"));
     }
 
     @Test
-    void deveRejeitarRegistroComCulturaNovaNula() {
-        assertThrows(NullPointerException.class,
-            () -> servico.registrarConsorcio(talhaoId, culturaAtiva, null, false));
+    void deveRejeitarQuantidadeDiferenteDeDuasCulturas() {
+        IllegalArgumentException excecao = assertThrows(IllegalArgumentException.class,
+            () -> servico.verificar(propriedadeId, List.of("Milho")));
+
+        assertTrue(excecao.getMessage().contains("CULTURA_INVALIDO"));
     }
 
     @Test
-    void deveRejeitarConsultaHistoricoComTalhaoIdNulo() {
-        assertThrows(NullPointerException.class,
-            () -> servico.consultarHistorico(null));
+    void deveRejeitarMesmaCulturaRepetida() {
+        when(culturaRepositorio.buscarPorNome(eq(propriedadeId), any(NomeComumCultura.class)))
+            .thenReturn(Optional.of(milho), Optional.of(milho));
+
+        IllegalArgumentException excecao = assertThrows(IllegalArgumentException.class,
+            () -> servico.verificar(propriedadeId, List.of("Milho", "Milho")));
+
+        assertTrue(excecao.getMessage().contains("CULTURA_INVALIDO"));
     }
 
     @Test
-    void deveChamarRepositorioUmaVezAoBuscarRelacao() {
-        when(relacaoRepositorio.buscarPorCulturas(culturaAtiva, culturaNova))
-            .thenReturn(Optional.empty());
+    void deveRejeitarCustomizadaSemFamiliaBotanica() {
+        Cultura customizada = Cultura.customizadaSemFamilia(propriedadeId, "Milho-Custom", "Local");
+        when(culturaRepositorio.buscarPorNome(eq(propriedadeId), any(NomeComumCultura.class)))
+            .thenReturn(Optional.of(customizada), Optional.of(feijao));
 
-        servico.registrarConsorcio(talhaoId, culturaAtiva, culturaNova, false);
+        IllegalArgumentException excecao = assertThrows(IllegalArgumentException.class,
+            () -> servico.verificar(propriedadeId, List.of("Milho-Custom", "Feijao")));
 
-        verify(relacaoRepositorio, times(1)).buscarPorCulturas(culturaAtiva, culturaNova);
+        assertTrue(excecao.getMessage().contains("CULTURA_INVALIDO"));
+    }
+
+    private void prepararBusca(Cultura primeira, Cultura segunda) {
+        when(culturaRepositorio.buscarPorNome(eq(propriedadeId), any(NomeComumCultura.class)))
+            .thenReturn(Optional.of(primeira), Optional.of(segunda));
     }
 }

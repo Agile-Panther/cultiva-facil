@@ -1,90 +1,33 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.compatibilidade;
 
-import br.edu.cesar.cultivafacil.domain.cultivo.ciclo.NomeCultura;
+import br.edu.cesar.cultivafacil.domain.cultivo.cultura.CulturaId;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RelacaoCompatibilidadeTest {
 
     @Test
-    void deveCriarRelacaoComDoisNomesEClassificacao() {
-        NomeCultura base = new NomeCultura("Tomate");
-        NomeCultura relacionada = new NomeCultura("Manjericão");
+    void deveCriarRelacaoEntreDuasCulturasDistintas() {
+        CulturaId milho = CulturaId.novo();
+        CulturaId feijao = CulturaId.novo();
 
-        RelacaoCompatibilidade relacao = new RelacaoCompatibilidade(base, relacionada, ClassificacaoConsorcio.COMPANHEIRA);
+        RelacaoCompatibilidade relacao = new RelacaoCompatibilidade(
+            milho, feijao, ClassificacaoConsorcio.COMPANHEIRA, "Fixação de nitrogenio");
 
         assertNotNull(relacao.getId());
-        assertEquals(base, relacao.getCulturaBase());
-        assertEquals(relacionada, relacao.getCulturaRelacionada());
+        assertTrue(relacao.envolve(milho, feijao));
+        assertTrue(relacao.envolve(feijao, milho));
         assertEquals(ClassificacaoConsorcio.COMPANHEIRA, relacao.getClassificacao());
     }
 
     @Test
-    void deveCriarRelacaoInimigaEntreTomate_e_Funcho() {
-        NomeCultura tomate = new NomeCultura("Tomate");
-        NomeCultura funcho = new NomeCultura("Funcho");
+    void deveRejeitarRelacaoDaMesmaCultura() {
+        CulturaId milho = CulturaId.novo();
 
-        RelacaoCompatibilidade relacao = new RelacaoCompatibilidade(tomate, funcho, ClassificacaoConsorcio.INIMIGA);
+        IllegalArgumentException excecao = assertThrows(IllegalArgumentException.class,
+            () -> new RelacaoCompatibilidade(milho, milho, ClassificacaoConsorcio.NEUTRA, ""));
 
-        assertEquals(ClassificacaoConsorcio.INIMIGA, relacao.getClassificacao());
-    }
-
-    @Test
-    void deveCriarRelacaoNeutraParaCulturasSemlRelacaoDef() {
-        NomeCultura tomate = new NomeCultura("Tomate");
-        NomeCultura cenoura = new NomeCultura("Cenoura");
-
-        RelacaoCompatibilidade relacao = new RelacaoCompatibilidade(tomate, cenoura, ClassificacaoConsorcio.NEUTRA);
-
-        assertEquals(ClassificacaoConsorcio.NEUTRA, relacao.getClassificacao());
-    }
-
-    @Test
-    void deveRejeitarCulturaBaseNula() {
-        NomeCultura relacionada = new NomeCultura("Manjericão");
-
-        assertThrows(NullPointerException.class,
-            () -> new RelacaoCompatibilidade(null, relacionada, ClassificacaoConsorcio.COMPANHEIRA));
-    }
-
-    @Test
-    void deveRejeitarCulturaRelacionadaNula() {
-        NomeCultura base = new NomeCultura("Tomate");
-
-        assertThrows(NullPointerException.class,
-            () -> new RelacaoCompatibilidade(base, null, ClassificacaoConsorcio.COMPANHEIRA));
-    }
-
-    @Test
-    void deveRejeitarClassificacaoNula() {
-        NomeCultura base = new NomeCultura("Tomate");
-        NomeCultura relacionada = new NomeCultura("Manjericão");
-
-        assertThrows(NullPointerException.class,
-            () -> new RelacaoCompatibilidade(base, relacionada, null));
-    }
-
-    @Test
-    void deveReconstituirComIdExistente() {
-        RelacaoCompatibilidadeId id = new RelacaoCompatibilidadeId(UUID.randomUUID());
-        NomeCultura base = new NomeCultura("Tomate");
-        NomeCultura relacionada = new NomeCultura("Funcho");
-
-        RelacaoCompatibilidade relacao = new RelacaoCompatibilidade(id, base, relacionada, ClassificacaoConsorcio.INIMIGA);
-
-        assertEquals(id, relacao.getId());
-        assertEquals(ClassificacaoConsorcio.INIMIGA, relacao.getClassificacao());
-    }
-
-    @Test
-    void deveRejeitarIdNuloNaReconstituicao() {
-        NomeCultura base = new NomeCultura("Tomate");
-        NomeCultura relacionada = new NomeCultura("Funcho");
-
-        assertThrows(NullPointerException.class,
-            () -> new RelacaoCompatibilidade(null, base, relacionada, ClassificacaoConsorcio.INIMIGA));
+        assertTrue(excecao.getMessage().contains("CULTURA_INVALIDO"));
     }
 }

@@ -13,7 +13,7 @@ import static io.cucumber.core.options.Constants.PLUGIN_PROPERTY_NAME;
 @IncludeEngines("cucumber")
 @SelectPackages("br.edu.cesar.cultivafacil.domain.cultivo")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
-@ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "classpath:features")
+@ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "classpath:br/edu/cesar/cultivafacil/domain/cultivo/features")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "br.edu.cesar.cultivafacil.domain.cultivo")
 public class RunCucumberTest {
 }
