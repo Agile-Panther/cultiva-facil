@@ -7,8 +7,8 @@ public class DiasDescanso {
     private final int valor;
 
     public DiasDescanso(int valor) {
-        Validate.isTrue(valor >= 1 && valor <= 365,
-                "INTERVALO_INVALIDO: Intervalo de descanso deve estar entre 1 e 365 dias");
+        Validate.isTrue(valor >= 30 && valor <= 3650,
+                "ROTACAO_INVALIDO: Intervalo de descanso deve estar entre 30 e 3650 dias");
         this.valor = valor;
     }
 

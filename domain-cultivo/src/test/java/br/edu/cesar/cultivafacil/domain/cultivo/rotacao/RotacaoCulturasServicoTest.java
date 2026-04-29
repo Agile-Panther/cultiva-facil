@@ -1,7 +1,7 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.rotacao;
 
 import br.edu.cesar.cultivafacil.domain.cultivo.ciclo.NomeCultura;
-import br.edu.cesar.cultivafacil.domain.terreno.zona.ZonaId;
+import br.edu.cesar.cultivafacil.domain.terreno.talhao.TalhaoId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,75 +18,90 @@ import static org.mockito.Mockito.*;
 class RotacaoCulturasServicoTest {
 
     @Mock
-    private IntervalodeDescansoRepositorio repositorio;
+    private PoliticaDescansoSoloRepositorio repositorio;
 
     @InjectMocks
     private RotacaoCulturasServico servico;
 
-    // F-08 RN-051 — sem histórico encerrado, cadastro é rejeitado
+    // F-08 RN-066 — sem histórico encerrado, cadastro é rejeitado
     @Test
     void deveRejeitarCadastroSemHistoricoEncerrado() {
-        var zonaId = ZonaId.novo();
+        var talhaoId = TalhaoId.novo();
         var cultura = new NomeCultura("Milho");
 
-        when(repositorio.existeCicloEncerrado(zonaId, cultura)).thenReturn(false);
+        when(repositorio.existeCicloEncerrado(talhaoId, cultura)).thenReturn(false);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> servico.cadastrarIntervalo(zonaId, cultura, new DiasDescanso(20)));
+        var ex = assertThrows(IllegalArgumentException.class,
+                () -> servico.cadastrarIntervalo(talhaoId, cultura, new DiasDescanso(30)));
 
-        verify(repositorio, times(1)).existeCicloEncerrado(zonaId, cultura);
+        assertTrue(ex.getMessage().contains("TALHAO_INVALIDO"));
+        verify(repositorio, times(1)).existeCicloEncerrado(talhaoId, cultura);
     }
 
-    // F-08 RN-051 (positivo)
+    // F-08 RN-066 (positivo)
     @Test
     void deveCadastrarIntervaloComHistoricoEncerrado() {
-        var zonaId = ZonaId.novo();
+        var talhaoId = TalhaoId.novo();
         var cultura = new NomeCultura("Tomate");
 
-        when(repositorio.existeCicloEncerrado(zonaId, cultura)).thenReturn(true);
+        when(repositorio.existeCicloEncerrado(talhaoId, cultura)).thenReturn(true);
 
-        assertDoesNotThrow(() -> servico.cadastrarIntervalo(zonaId, cultura, new DiasDescanso(30)));
+        assertDoesNotThrow(() -> servico.cadastrarIntervalo(talhaoId, cultura, new DiasDescanso(30)));
 
-        verify(repositorio, times(1)).salvar(any(IntervalodeDescanso.class));
+        verify(repositorio, times(1)).salvar(any(PoliticaDescansoSolo.class));
     }
 
-    // F-08 RN-053 — colheita há 20 dias, intervalo de 30: bloqueado
+    // F-08 RN-068 — dispensa rejeitada quando intervalo já foi cumprido
     @Test
-    void deveBloquearVinculoDentroDoIntervalo() {
-        var zonaId = ZonaId.novo();
+    void deveRejeitarDispensaQuandoIntervaloCumprido() {
+        var talhaoId = TalhaoId.novo();
         var cultura = new NomeCultura("Tomate");
-        var intervalo = new IntervalodeDescanso(zonaId, cultura,
-                new DiasDescanso(30), LocalDate.now().minusDays(20));
-
-        when(repositorio.buscarIntervalo(zonaId, cultura)).thenReturn(Optional.of(intervalo));
-
-        assertThrows(IllegalArgumentException.class,
-                () -> servico.validarDescanso(zonaId, cultura, LocalDate.now()));
-
-        verify(repositorio, times(1)).buscarIntervalo(zonaId, cultura);
-    }
-
-    // F-08 RN-053 (positivo) — colheita há 35 dias, intervalo de 30: liberado
-    @Test
-    void devePermitirVinculoAposIntervalo() {
-        var zonaId = ZonaId.novo();
-        var cultura = new NomeCultura("Tomate");
-        var intervalo = new IntervalodeDescanso(zonaId, cultura,
+        var politica = new PoliticaDescansoSolo(talhaoId, cultura,
                 new DiasDescanso(30), LocalDate.now().minusDays(35));
 
-        when(repositorio.buscarIntervalo(zonaId, cultura)).thenReturn(Optional.of(intervalo));
+        when(repositorio.buscarPorTalhaoECultura(talhaoId, cultura)).thenReturn(Optional.of(politica));
 
-        assertDoesNotThrow(() -> servico.validarDescanso(zonaId, cultura, LocalDate.now()));
+        var justificativa = new JustificativaDispensa(
+                "Esta eh uma justificativa valida com mais de vinte caracteres");
+
+        var ex = assertThrows(IllegalArgumentException.class,
+                () -> servico.concederDispensa(talhaoId, cultura, justificativa, LocalDate.now()));
+
+        assertTrue(ex.getMessage().contains("TALHAO_INVALIDO"));
     }
 
-    // Sem intervalo configurado — vínculo sempre liberado
+    // F-08 RN-068 — dispensa rejeitada sem política vigente
     @Test
-    void devePermitirVinculoSemIntervaloConfigurado() {
-        var zonaId = ZonaId.novo();
+    void deveRejeitarDispensaSemPoliticaVigente() {
+        var talhaoId = TalhaoId.novo();
         var cultura = new NomeCultura("Milho");
 
-        when(repositorio.buscarIntervalo(zonaId, cultura)).thenReturn(Optional.empty());
+        when(repositorio.buscarPorTalhaoECultura(talhaoId, cultura)).thenReturn(Optional.empty());
 
-        assertDoesNotThrow(() -> servico.validarDescanso(zonaId, cultura, LocalDate.now()));
+        var justificativa = new JustificativaDispensa(
+                "Esta eh uma justificativa valida com mais de vinte caracteres");
+
+        var ex = assertThrows(IllegalArgumentException.class,
+                () -> servico.concederDispensa(talhaoId, cultura, justificativa, LocalDate.now()));
+
+        assertTrue(ex.getMessage().contains("TALHAO_INVALIDO"));
+    }
+
+    // F-08 RN-067 e RN-068 (positivo) — dispensa concedida dentro do intervalo
+    @Test
+    void deveConcederDispensaDentroDoIntervalo() {
+        var talhaoId = TalhaoId.novo();
+        var cultura = new NomeCultura("Tomate");
+        var politica = new PoliticaDescansoSolo(talhaoId, cultura,
+                new DiasDescanso(30), LocalDate.now().minusDays(10));
+
+        when(repositorio.buscarPorTalhaoECultura(talhaoId, cultura)).thenReturn(Optional.of(politica));
+
+        var justificativa = new JustificativaDispensa(
+                "Justificativa valida com mais de vinte caracteres para dispensa");
+
+        assertDoesNotThrow(() -> servico.concederDispensa(talhaoId, cultura, justificativa, LocalDate.now()));
+
+        verify(repositorio, times(1)).salvar(any(PoliticaDescansoSolo.class));
     }
 }

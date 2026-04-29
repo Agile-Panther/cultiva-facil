@@ -1,35 +1,35 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.rotacao;
 
 import br.edu.cesar.cultivafacil.domain.cultivo.ciclo.NomeCultura;
-import br.edu.cesar.cultivafacil.domain.terreno.zona.ZonaId;
+import br.edu.cesar.cultivafacil.domain.terreno.talhao.TalhaoId;
 
 import java.time.LocalDate;
 
 public class RotacaoCulturasServico {
 
-    private final IntervalodeDescansoRepositorio repositorio;
+    private final PoliticaDescansoSoloRepositorio repositorio;
 
-    public RotacaoCulturasServico(IntervalodeDescansoRepositorio repositorio) {
+    public RotacaoCulturasServico(PoliticaDescansoSoloRepositorio repositorio) {
         this.repositorio = repositorio;
     }
 
-    // F-08 RN-051 e RN-052
-    public void cadastrarIntervalo(ZonaId zonaId, NomeCultura cultura, DiasDescanso dias) {
-        if (!repositorio.existeCicloEncerrado(zonaId, cultura)) {
+    // F-08 RN-065 e RN-066
+    public void cadastrarIntervalo(TalhaoId talhaoId, NomeCultura cultura, DiasDescanso dias) {
+        if (!repositorio.existeCicloEncerrado(talhaoId, cultura)) {
             throw new IllegalArgumentException(
-                    "INTERVALO_SEM_HISTORICO: a Zona nao possui ciclo encerrado para " + cultura);
+                    "TALHAO_INVALIDO: o Talhao nao possui ciclo encerrado para " + cultura);
         }
-        repositorio.salvar(new IntervalodeDescanso(zonaId, cultura, dias, LocalDate.now()));
+        var politica = new PoliticaDescansoSolo(talhaoId, cultura, dias, LocalDate.now());
+        repositorio.salvar(politica);
     }
 
-    // F-08 RN-053
-    public void validarDescanso(ZonaId zonaId, NomeCultura cultura, LocalDate dataVinculo) {
-        repositorio.buscarIntervalo(zonaId, cultura).ifPresent(intervalo -> {
-            if (!intervalo.foiCumprido(dataVinculo)) {
-                throw new IllegalArgumentException(
-                        "INTERVALO_NAO_CUMPRIDO: o Intervalo de Descanso para "
-                                + cultura + " ainda nao foi cumprido");
-            }
-        });
+    // F-08 RN-067 e RN-068
+    public void concederDispensa(TalhaoId talhaoId, NomeCultura cultura,
+                                  JustificativaDispensa justificativa, LocalDate dataAtual) {
+        var politica = repositorio.buscarPorTalhaoECultura(talhaoId, cultura)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "TALHAO_INVALIDO: nao existe Intervalo de Descanso vigente para dispensar"));
+        politica.concederDispensa(justificativa, dataAtual);
+        repositorio.salvar(politica);
     }
 }
