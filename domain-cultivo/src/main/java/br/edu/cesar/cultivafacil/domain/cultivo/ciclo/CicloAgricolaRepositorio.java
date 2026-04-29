@@ -1,8 +1,7 @@
 package br.edu.cesar.cultivafacil.domain.cultivo.ciclo;
 
-import br.edu.cesar.cultivafacil.domain.terreno.zona.ZonaId;
+import br.edu.cesar.cultivafacil.domain.terreno.talhao.TalhaoId;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface CicloAgricolaRepositorio {
@@ -11,7 +10,5 @@ public interface CicloAgricolaRepositorio {
 
     Optional<CicloAgricola> buscarPorId(CicloAgricolaId id);
 
-    Optional<CicloAgricola> buscarAtivoPorZona(ZonaId zonaId);
-
-    List<CicloAgricola> listarPorZona(ZonaId zonaId);
+    Optional<CicloAgricola> buscarAtivoPorTalhao(TalhaoId talhaoId);
 }

@@ -26,9 +26,16 @@ class QuantidadePlantadaTest {
     }
 
     @Test
-    @DisplayName("deve rejeitar mais de duas casas decimais")
-    void deveRejeitarMaisDeDuasCasasDecimais() {
-        assertThrows(IllegalArgumentException.class, () -> new QuantidadePlantada(10.123));
+    @DisplayName("deve rejeitar mais de tres casas decimais")
+    void deveRejeitarMaisDeTresCasasDecimais() {
+        var ex = assertThrows(IllegalArgumentException.class, () -> new QuantidadePlantada(10.1234));
+        assertTrue(ex.getMessage().contains("QUANTIDADE_INVALIDA"));
+    }
+
+    @Test
+    @DisplayName("deve aceitar ate tres casas decimais")
+    void deveAceitarAteTresCasasDecimais() {
+        assertDoesNotThrow(() -> new QuantidadePlantada(10.123));
     }
 
     @Test
