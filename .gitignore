@@ -36,6 +36,10 @@ dist/
 .env
 .env.dev
 
+# IntelliJ IDEA
+.idea/
+*.iml
+
 .claude
 
 # Javacompile
