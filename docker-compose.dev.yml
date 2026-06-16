@@ -1,0 +1,50 @@
+services:
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: cultivafacil
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    env_file: .env.dev
+    volumes:
+      - .:/app
+      - maven_repo:/root/.m2
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: presentation-frontend/src/main/react
+      dockerfile: Dockerfile.dev
+    env_file: .env.dev
+    volumes:
+      - ./presentation-frontend/src/main/react:/app
+      - node_modules_dev:/app/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data_dev:
+  maven_repo:
+  node_modules_dev:
